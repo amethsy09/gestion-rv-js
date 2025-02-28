@@ -8,13 +8,13 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.min.css"
       rel="stylesheet"
     />
-    <title>Dashboard</title>
+    <title>Secretaires || Docteurs</title>
   </head>
   <body class="flex h-screen">
     <!-- sidebar -->
     <div
       id="sidebar"
-      class="flex flex-col justify-between p-3 fixed left-0 bg-gray-50 shadow-md h-full w-64 lg:w-52 md:flex transform transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 z-50"
+      class="flex flex-col justify-between p-3 fixed left-0 bg-gray-50 shadow-md h-full w-64 lg:w-52 lg:flex transform transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 z-50"
     >
       <div class="flex justify-between">
         <div class="flex items-center text-white gap-1">
@@ -30,13 +30,16 @@
       </div>
       <nav>
         <ul>
-          <li class="py-2 bg-purple-100 hover:bg-purple-100">
-            <a href="" class="font-medium gap-3 flex items-center">
+          <li class="py-2 hover:bg-purple-100">
+            <a
+              href="/frontend/src/pages/secretaire/dashboard.html"
+              class="font-medium gap-3 flex items-center"
+            >
               <i class="ri-home-3-line text-lg"></i>
               <span>Accueil</span>
             </a>
           </li>
-          <li class="py-2 hover:bg-purple-100">
+          <li class="py-2 bg-purple-100">
             <a
               href="/frontend/src/pages/secretaire/sec_docteur.html"
               class="font-medium gap-3 flex items-center"
@@ -78,18 +81,18 @@
       <!-- header -->
       <div class="flex items-center justify-between py-2 px-3 shadow-md">
         <div>
-          <h1 class="text-lg font-medium hidden md:block">
+          <h1 id="profileTitle" class="text-lg font-medium hidden lg:block">
             Espace secretaires
           </h1>
           <div
-            class="h-10 w-10 rounded-full bg-gray-50 flex justify-center items-center md:hidden"
+            class="h-10 w-10 rounded-full bg-gray-50 flex justify-center items-center lg:hidden"
             id="sidebar-device"
           >
             <i class="ri-menu-2-fill font-medium"></i>
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <div class="hidden md:flex flex-col mr-4 text-sm font-medium">
+          <div class="hidden lg:flex flex-col mr-4 text-sm font-medium">
             <p class="text-end" id="profileName"></p>
             <p class="" id="profileEmail"></p>
           </div>
@@ -102,60 +105,47 @@
       </div>
       <!-- section 1 -->
       <div class="flex flex-col gap-6 mt-7 px-3">
-        <h1
-          class="font-bold text-xl md:text-3xl text-gray-700"
-          id="profileTitle"
-        ></h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div
-            class="flex items-center gap-3 p-2 shadow-md rounded transition-transform duration-300 hover:scale-105 cursor-pointer"
-          >
-            <div class="w-20 h-20 rounded-full bg-blue-50 flex items-center">
-              <img
-                src="/frontend/public/assets/patients.png"
-                alt=""
-                class="object-cover"
-              />
-            </div>
-            <div class="flex flex-col gap-2">
-              <h2 class="font-medium text-lg">Nombres de patients</h2>
-              <p id="totalPatients" class="text-center"></p>
-            </div>
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-3">
+            <img
+              src="/frontend/public/assets/docteur.png"
+              alt=""
+              class="h-10 md:h-14"
+            />
+            <h1 class="font-bold text-lg text-gray-700">Liste des medecins</h1>
           </div>
-          <div
-            class="flex items-center gap-3 p-2 shadow-md rounded transition-transform duration-300 hover:scale-105 cursor-pointer"
+          <button
+            id="openAddDocteurModal"
+            class="px-3 py-2 bg-green-500 text-white hover:bg-green-600 font-medium rounded flex items-center gap-2"
           >
-            <div class="w-20 h-20 rounded-full bg-orange-50 flex items-center">
-              <img
-                src="/frontend/public/assets/docteur.png"
-                alt=""
-                class="object-cover"
-              />
-            </div>
-            <div class="flex flex-col gap-2">
-              <h2 class="font-medium text-lg">Nombres de docteurs</h2>
-              <p id="totalDoctors" class="text-center"></p>
-            </div>
-          </div>
-          <div
-            class="flex items-center gap-3 p-2 shadow-md rounded transition-transform duration-300 hover:scale-105 cursor-pointer"
-          >
-            <div class="w-20 h-20 rounded-full bg-green-50 flex items-center">
-              <img
-                src="/frontend/public/assets/rendez-vous.png"
-                alt=""
-                class="object-cover"
-              />
-            </div>
-            <div class="flex flex-col gap-2">
-              <h2 class="font-medium text-lg">Nombres de rendez-vous</h2>
-              <p id="totalAppointments" class="text-center"></p>
-            </div>
-          </div>
+            <span class="hidden md:flex">Nouvelle docteurs</span>
+            <i class="ri-function-add-line"></i>
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white rounded-lg overflow-hidden">
+            <thead class="bg-gray-50 text-sm">
+              <tr>
+                <th class="py-2 px-4 text-start">Avatar</th>
+                <th class="py-2 px-4 text-start">Nom</th>
+                <th class="py-2 px-4 text-start">Email</th>
+                <th class="py-2 px-4 text-start">Spécialité</th>
+                <th class="py-2 px-4 text-start">Actions</th>
+              </tr>
+            </thead>
+            <tbody
+              id="doctorsTableBody"
+              class="text-gray-700 whitespace-nowrap"
+            >
+              <!-- Les lignes des docteurs seront insérées ici dynamiquement -->
+            </tbody>
+          </table>
         </div>
       </div>
+      <div id="modalContainer"></div>
     </div>
     <script type="module" src="../../router/router.js"></script>
     <script type="module" src="./js/dashboard.js"></script>
+    <script type="module" src="./js/sec_docteur.js"></script>
   </body>
 </html>
