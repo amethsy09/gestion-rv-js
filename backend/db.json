@@ -1,0 +1,98 @@
+{
+    "secretaire": [
+      {
+        "id": "1",
+        "nom": "Jean",
+        "prenom": "Dupont",
+        "telephone": "77 678 90 76",
+        "avatar": "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "email": "jeandupont@gmail.com",
+        "password": "ridendo",
+        "id_role": 1
+      }
+    ],
+    "docteurs": [
+      {
+        "id": "1",
+        "nom": "Thiam",
+        "prenom": "Samba",
+        "telephone": "77 678 90 76",
+        "email": "sambathiam@gmail.com",
+        "password": "ridendo",
+        "specialite": "dentiste",
+        "avatar": "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "id_role": 2
+      },
+      {
+        "id": "2",
+        "nom": "Thiam",
+        "prenom": "Ousmane",
+        "telephone": "958777095",
+        "email": "ousmane025@gmail.com",
+        "password": "liverpool",
+        "specialite": "chirurgien",
+        "avatar": "https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "id_role": 2
+      }
+    ],
+    "patients": [
+      {
+        "id": "1",
+        "nom": "Lo",
+        "prenom": "Léa",
+        "telephone": "77 678 90 76",
+        "email": "lea@gmail.com",
+        "password": "ridendo",
+        "adresse": "yeumbeul",
+        "avatar": "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "id_role": 3
+      },
+      {
+        "id": "2",
+        "nom": "lo",
+        "prenom": "Souleymane",
+        "telephone": "0612345678",
+        "email": "ridendo040@gmail.com",
+        "password": "liverpool",
+        "adresse": "Yeumbeul ",
+        "avatar": "https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "id_role": 3
+      }
+    ],
+    "role": [
+      {
+        "id": "1",
+        "libelle": "secretaire"
+      },
+      {
+        "id": "2",
+        "libelle": "docteurs"
+      },
+      {
+        "id": "3",
+        "libelle": "patients"
+      }
+    ],
+    "rendez-vous": [
+      {
+        "id": "1",
+        "date": "2025-01-01",
+        "heure": "10:00",
+        "id_docteur": 1,
+        "id_patient": 1,
+        "id_secretaire": 1,
+        "status": "En attente",
+        "specialite": "dentiste"
+      },
+      {
+        "id": "2",
+        "date": "2025-02-25",
+        "heure": "00:05",
+        "id_docteur": 1,
+        "id_patient": 1,
+        "id_secretaire": 1,
+        "status": "Accepté",
+        "specialite": "chirurgien"
+      }
+    ]
+  }
