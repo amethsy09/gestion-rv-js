@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>page doctors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.min.css"
+      rel="stylesheet"
+    />
 </head>
 <body>
     <h1>hello doctors</h1>
-    <script type="module" src="/frontend/src/router/router.js"></script>
+    <button id="logoutBtn">deconnexion</button>
 
+    <div id="notifications" class="fixed top-4 right-4 space-y-2"></div>
+
+    <script type="module" src="/frontend/src/router/router.js"></script>
+<script type="module" src="/frontend/src/pages/doctors/js/dashboard.js"></script>
 </body>
 </html>

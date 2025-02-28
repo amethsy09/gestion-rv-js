@@ -81,7 +81,7 @@
         "id_docteur": 1,
         "id_patient": 1,
         "id_secretaire": 1,
-        "status": "En attente",
+        "status": "Accepté",
         "specialite": "dentiste"
       },
       {
@@ -91,7 +91,17 @@
         "id_docteur": 1,
         "id_patient": 1,
         "id_secretaire": 1,
-        "status": "Accepté",
+        "status": "Annulé",
+        "specialite": "chirurgien"
+      },
+      {
+        "id": "3",
+        "date": "2025-02-25",
+        "heure": "00:05",
+        "id_docteur": 2,
+        "id_patient": 1,
+        "id_secretaire": 1,
+        "status": "Annulé",
         "specialite": "chirurgien"
       }
     ]

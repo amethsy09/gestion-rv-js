@@ -1,5 +1,7 @@
+import { showNotification } from "./components/notifications/notification.js";
 import { login } from "./services/authServices.js";
 import { setCurrentUser } from "./store/auth.js";
+import { setNotification } from "./store/notification.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#loginForm");
@@ -33,10 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const user = await login(email, password);
       setCurrentUser(user);
+      setNotification("connexion successful");
       redirectUser(user.role);
     } catch (error) {
         console.log(error.message);
-        
+        showNotification(error.message,'error');
     }
   });
 });
