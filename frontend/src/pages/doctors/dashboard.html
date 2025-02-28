@@ -1,22 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>page doctors</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.min.css"
       rel="stylesheet"
     />
-</head>
-<body>
-    <h1>hello doctors</h1>
-    <button id="logoutBtn">deconnexion</button>
-
+    <title>Medecin | Dasboard</title>
+  </head>
+  <body class="h-screen flex bg-slate-50">
+    <!-- Sidebar -->
+    <div
+      id="sidebar"
+      class="flex flex-col justify-between p-3 fixed left-0 shadow-sm bg-white h-full w-64 lg:w-52 md:flex transform transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 z-50"
+    >
+      <div class="flex justify-between">
+        <div class="flex items-center text-white gap-1">
+          <div class="p-2 bg-purple-500 rounded text-white self-center">GR</div>
+          <div class="flex flex-col text-gray-800 font-medium">
+            <span>Gestion</span>
+            <span>Rendez-vous</span>
+          </div>
+        </div>
+        <div class="lg:hidden" id="sidebar-close">
+          <i class="ri-layout-right-line text-lg font-semibold"></i>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li
+            class="p-2 bg-gradient-to-r from-purple-200 to-white hover:bg-purple-50"
+          >
+            <a
+              href="/frontend/src/pages/doctors/dashboard.html"
+              class="font-medium gap-3 flex items-center"
+            >
+              <i class="ri-home-3-line text-lg"></i>
+              <span>Dasboard</span>
+            </a>
+          </li>
+          <li class="p-2 hover:bg-purple-50">
+            <a
+              href="/frontend/src/pages/doctors/doc_rv.html"
+              class="font-medium gap-3 flex items-center"
+            >
+              <i class="ri-timer-flash-line text-lg"></i>
+              <span>Rendez-vous</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div
+        class="relative flex flex-col items-center bg-gradient-to-b from-gray-100 to-white rounded p-2"
+      >
+        <img
+          id="profileDoc"
+          class="w-12 h-12 object-cover rounded-full absolute -top-6"
+          alt=""
+        />
+        <div class="flex flex-col items-center pt-4">
+          <p class="font-medium" id="nameDoc"></p>
+          <span id="specialiteDoc"></span>
+        </div>
+        <div class="flex items-center gap-3 mt-2">
+          <div
+            class="w-10 h-10 rounded-full bg-white flex justify-center items-center cursor-pointer shadow hover:cursor-not-allowed"
+          >
+            <i class="ri-settings-2-line"></i>
+          </div>
+          <div
+            id="logoutBtn"
+            class="w-10 h-10 rounded-full bg-white flex justify-center items-center cursor-pointer shadow"
+          >
+            <i class="ri-logout-box-r-line"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Content -->
+    <div class="w-full lg:ml-52">
+      <!-- Header -->
+      <div class="p-2 flex items-center justify-between bg-white shadow-sm">
+        <div>
+          <h1 class="text-lg font-medium hidden lg:block">Espace docteurs</h1>
+          <div
+            class="h-10 w-10 rounded-full bg-gray-50 flex justify-center items-center lg:hidden"
+            id="sidebar-device"
+          >
+            <i class="ri-menu-2-fill font-medium"></i>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 mt-2">
+          <div
+            class="w-10 h-10 rounded-full bg-gray-50 flex justify-center items-center cursor-pointer"
+          >
+            <i class="ri-message-3-line"></i>
+          </div>
+          <div
+            class="w-10 h-10 rounded-full bg-gray-50 flex justify-center items-center cursor-pointer"
+          >
+            <i class="ri-notification-3-line"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Content-1 -->
+      <div class="mt-6 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div
+            class="p-3 rounded bg-white shadow-sm flex flex-col gap-2 relative transition-transform duration-300 hover:scale-105 cursor-pointer"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded bg-blue-50 flex justify-center items-center cursor-pointer"
+              >
+                <i class="ri-group-3-line text-blue-500 font-medium"></i>
+              </div>
+              <p class="text-blue-500 font-medium text-lg">Patients</p>
+            </div>
+            <div>
+              <p class="font-medium text-5xl" id="totalPatients">03</p>
+              <span class="text-gray-400 font-medium"
+                >Total de vos patients disponibles</span
+              >
+            </div>
+            <div
+              class="w-12 h-12 rounded-full bg-blue-50 flex justify-center items-center cursor-pointer absolute top-2 right-2"
+            >
+              <i class="ri-arrow-right-up-box-line text-xl"></i>
+            </div>
+          </div>
+          <div
+            class="p-3 rounded bg-white shadow-sm flex flex-col gap-2 relative transition-transform duration-300 hover:scale-105 cursor-pointer"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded bg-orange-50 flex justify-center items-center cursor-pointer"
+              >
+                <i class="ri-calendar-line text-orange-500 font-medium"></i>
+              </div>
+              <p class="text-orange-500 font-medium text-lg">Rendez-vous</p>
+            </div>
+            <div>
+              <p class="font-medium text-5xl" id="totalAppointments">05</p>
+              <span class="text-gray-400 font-medium"
+                >Total de vos rendez-vous disponibles</span
+              >
+            </div>
+            <div
+              class="w-12 h-12 rounded-full bg-orange-50 flex justify-center items-center cursor-pointer absolute top-2 right-2"
+            >
+              <i class="ri-arrow-right-up-box-line text-xl"></i>
+            </div>
+          </div>
+          <div
+            class="p-3 rounded bg-white shadow-sm flex flex-col gap-2 relative transition-transform duration-300 hover:scale-105 cursor-pointer"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded bg-green-50 flex justify-center items-center cursor-pointer"
+              >
+                <i class="ri-history-line text-green-500 font-medium"></i>
+              </div>
+              <p class="text-green-500 font-medium text-lg">
+                Rendez-vous en attente
+              </p>
+            </div>
+            <div>
+              <p class="font-medium text-5xl" id="pendingAppointments"></p>
+              <span class="text-gray-400 font-medium"
+                >Total de vos rendez-vous en attente</span
+              >
+            </div>
+            <div
+              class="w-12 h-12 rounded-full bg-green-50 flex justify-center items-center cursor-pointer absolute top-2 right-2"
+            >
+              <i class="ri-arrow-right-up-box-line text-xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-5 px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <div class="bg-white p-3 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold text-gray-500">
+              Évolution des rendez-vous par status
+            </h3>
+            <canvas id="statutRendezVousChart"></canvas>
+          </div>
+          <div class="bg-white p-3 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold text-gray-500">
+              Évolution des patients
+            </h3>
+            <canvas id="evolutionPatientsChart"></canvas>
+          </div>
+          <div class="bg-white p-3 rounded-lg shadow-md col-span-full">
+            <h3 class="text-lg font-semibold text-gray-500">
+              Évolution des rendez-vous par mois
+            </h3>
+            <canvas id="evolutionRendezVousChart" class="md:h-80"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="notifications" class="fixed top-4 right-4 space-y-2"></div>
-
-    <script type="module" src="/frontend/src/router/router.js"></script>
-<script type="module" src="/frontend/src/pages/doctors/js/dashboard.js"></script>
-</body>
+  </body>
+  <script type="module" src="/frontend/src/router/router.js"></script>
+  <script
+    type="module"
+    src="/frontend/src/pages/doctors/js/dashboard.js"
+  ></script>
 </html>
