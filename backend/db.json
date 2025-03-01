@@ -70,7 +70,7 @@
       "id_role": 3
     },
     {
-      "id": 3,
+      "id": "3",
       "nom": "Ndiaye",
       "prenom": "Souleymane",
       "telephone": "765467890",
@@ -115,6 +115,16 @@
       "id_secretaire": 1,
       "status": "Annulé",
       "specialite": "chirurgien"
+    },
+    {
+      "id": 4,
+      "date": "2025-03-01",
+      "heure": "00:13",
+      "id_docteur": 3,
+      "id_patient": 2,
+      "id_secretaire": 1,
+      "status": "en attente",
+      "specialite": "dentiste"
     }
   ]
 }
