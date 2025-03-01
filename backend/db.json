@@ -35,7 +35,7 @@
       "id_role": 2
     },
     {
-      "id": 3,
+      "id": "3",
       "nom": "Fall",
       "prenom": "Mouha",
       "telephone": "78123456",
@@ -67,6 +67,17 @@
       "password": "liverpool",
       "adresse": "Yeumbeul ",
       "avatar": "https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "id_role": 3
+    },
+    {
+      "id": 3,
+      "nom": "Ndiaye",
+      "prenom": "Souleymane",
+      "telephone": "765467890",
+      "email": "anz22@gmail.com",
+      "password": "liverpool",
+      "adresse": "Parcelle",
+      "avatar": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=600",
       "id_role": 3
     }
   ],
