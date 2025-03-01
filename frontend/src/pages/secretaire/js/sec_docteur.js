@@ -1,7 +1,5 @@
 import { closeAddDocteurModal, handleAddDocteurFormSubmit, openAddDocteurModal } from "../../../components/modals/docteurs/docteur_modal.js";
 import { getDoctors } from "../../../services/doctorService.js";
-
-
   
   document.addEventListener("DOMContentLoaded", async () => {
     await loadDoctorsTable();
