@@ -1,0 +1,109 @@
+<!-- Modale pour ajouter un rv -->
+<div
+  id="addRvModal"
+  class="fixed inset-0 flex bg-gray-800 bg-opacity-50 hidden items-center justify-center p-4"
+>
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-3xl p-3 relative">
+    <span
+      class="text-sm font-medium mb-4 p-1 bg-yellow-100 text-yellow-500 rounded-full"
+    >
+      Demande de rendez-vous <i class="ri-timer-line"></i>
+    </span>
+    <form id="addRvForm">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div class="">
+          <label
+            for="appointmentDate"
+            class="block text-sm font-medium text-gray-500"
+            >Date</label
+          >
+          <input
+            type="date"
+            id="appointmentDate"
+            name="date"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+          <span id="appointmentDateError"></span>
+        </div>
+        <div class="">
+          <label
+            for="appointmentTime"
+            class="block text-sm font-medium text-gray-500"
+            >Heure</label
+          >
+          <input
+            type="time"
+            id="appointmentTime"
+            name="heure"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+          <span id="appointmentTimeError"></span>
+        </div>
+        <div class="">
+          <label
+            for="appointmentDoctor"
+            class="block text-sm font-medium text-gray-500"
+            >Docteur</label
+          >
+          <select
+            id="appointmentDoctor"
+            name="id_docteur"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          >
+            <!-- Les options des docteurs seront injectées ici dynamiquement -->
+            <option value="">--choisir un medcin--</option>
+          </select>
+          <span id="appointmentDoctorError"></span>
+        </div>
+        <div class="">
+          <label
+            for="appointmentPatient"
+            class="block text-sm font-medium text-gray-500"
+            >Patient</label
+          >
+          <select
+            id="appointmentPatient"
+            name="id_patient"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">--choisir un patient--</option>
+          </select>
+          <span id="appointmentPatientError"></span>
+        </div>
+        <div class="">
+          <label
+            for="appointmentSpecialite"
+            class="block text-sm font-medium text-gray-500"
+            >Spécialité</label
+          >
+          <input
+            type="text"
+            placeholder="Entrez la specialite"
+            id="appointmentSpecialite"
+            name="specialite"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+
+          <span id="appointmentSpecialiteError"></span>
+        </div>
+      </div>
+      <div class="flex justify-end space-x-4">
+        <button
+          type="button"
+          id="cancelAddRv"
+          class="text-white bg-yellow-400 w-10 h-10 rounded-full hover:bg-yellow-500 absolute -top-3 -right-3 text-lg"
+        >
+          <i class="ri-close-line"></i>
+        </button>
+        <button
+          type="submit"
+          class="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600"
+        >
+          Ajouter
+          <i class="ri-apps-2-add-line"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="module" src="./patient_modal.js"></script>

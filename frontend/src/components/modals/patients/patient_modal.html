@@ -1,0 +1,165 @@
+<!-- Modale pour ajouter un patient -->
+<div
+  id="addPatientModal"
+  class="fixed inset-0 flex bg-gray-800 bg-opacity-50 hidden items-center justify-center p-4"
+>
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-3xl p-3 relative">
+    <span
+      class="text-sm font-medium mb-4 p-1 bg-blue-100 text-blue-500 rounded-full"
+    >
+      Ajouter un(e) patient(e)
+    </span>
+    <form id="addPatientForm">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div class="">
+          <label
+            for="patientNom"
+            class="block text-sm font-medium text-gray-500"
+            >Nom</label
+          >
+          <div class="relative">
+            <input
+              type="text"
+              id="patientNom"
+              placeholder="Entrez le nom"
+              name="nom"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            <i
+              class="ri-file-user-line absolute top-2 right-2 text-gray-600"
+            ></i>
+          </div>
+          <span id="nomPatientError"></span>
+        </div>
+        <div class="">
+          <label
+            for="patientPrenom"
+            class="block text-sm font-medium text-gray-500"
+            >Prénom</label
+          >
+          <div class="relative">
+            <input
+              type="text"
+              id="patientPrenom"
+              placeholder="Entrez le prenom"
+              name="prenom"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            <i
+              class="ri-file-user-line absolute top-2 right-2 text-gray-600"
+            ></i>
+          </div>
+          <span id="patientPrenomError"></span>
+        </div>
+        <div class="">
+          <label
+            for="patientEmail"
+            class="block text-sm font-medium text-gray-500"
+            >Email</label
+          >
+          <div class="relative">
+            <input
+              type="email"
+              id="patientEmail"
+              placeholder="Adresse mail"
+              name="email"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            <i class="ri-mail-ai-line absolute top-2 right-2 text-gray-600"></i>
+          </div>
+          <span id="patientEmailError"></span>
+        </div>
+        <div class="">
+          <label
+            for="patientTelephone"
+            class="block text-sm font-medium text-gray-500"
+            >Téléphone</label
+          >
+          <div class="relative">
+            <input
+              type="tel"
+              id="patientTelephone"
+              placeholder="Telephone ...."
+              name="telephone"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            <i class="ri-phone-line absolute top-2 right-2 text-gray-600"></i>
+          </div>
+          <span id="patientTelephoneError"></span>
+        </div>
+        <div class="">
+          <label
+            for="patientAdresse"
+            class="block text-sm font-medium text-gray-500"
+            >Adresse</label
+          >
+          <div class="relative">
+            <input
+              type="text"
+              id="patientAdresse"
+              placeholder="Localisation"
+              name="adresse"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            <i class="ri-map-pin-line absolute top-2 right-2 text-gray-600"></i>
+          </div>
+
+          <span id="patientAdresseError"></span>
+        </div>
+        <div class="">
+          <label
+            for="patientAvatar"
+            class="block text-sm font-medium text-gray-500"
+            >Avatar</label
+          >
+          <div class="relative">
+            <input
+              type="text"
+              id="patientAvatar"
+              placeholder="Avatar"
+              name="avatar"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            <i class="ri-image-line absolute top-2 right-2 text-gray-600"></i>
+          </div>
+          <span id="patientAvatarError"></span>
+        </div>
+        <div class="">
+          <label
+            for="patientPassword"
+            class="block text-sm font-medium text-gray-500"
+            >Passowrd</label
+          >
+          <div class="relative">
+            <input
+              type="password"
+              id="patientPassword"
+              placeholder="Mot de passe"
+              name="password"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            <i class="ri-lock-line absolute top-2 right-2 text-gray-600"></i>
+          </div>
+          <span id="patientPaswordError"></span>
+        </div>
+      </div>
+      <div class="flex justify-end space-x-4">
+        <button
+          type="button"
+          id="cancelAddPatient"
+          class="text-white bg-purple-400 w-10 h-10 rounded-full hover:bg-purple-500 absolute -top-3 -right-3 text-lg"
+        >
+          <i class="ri-close-line"></i>
+        </button>
+        <button
+          type="submit"
+          class="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600"
+        >
+          Ajouter
+          <i class="ri-apps-2-add-line"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="module" src="./patient_modal.js"></script>
