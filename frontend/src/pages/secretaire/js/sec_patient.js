@@ -72,12 +72,14 @@ async function loadModal() {
       e.preventDefault();
       const newPatient = await handleAddPatientFormSubmit();
       const checkModal = document.getElementById("checkModal");
-      const modal = createModal(
-        "verifier.png",
-        `Dr ${newPatient.prenom} ${newPatient.nom} ajouter avec success`,
-        "blue"
-      );
-      checkModal.appendChild(modal);
+      if (newPatient) {
+        const modal = createModal(
+          "verifier.png",
+          `Dr ${newPatient.prenom} ${newPatient.nom} ajouter avec success`,
+          "blue"
+        );
+        checkModal.appendChild(modal);
+      }
     });
   } catch (error) {
     console.error("Erreur :", error);
