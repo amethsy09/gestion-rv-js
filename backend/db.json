@@ -33,17 +33,6 @@
       "specialite": "chirurgien",
       "avatar": "https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600",
       "id_role": 2
-    },
-    {
-      "id": "3",
-      "nom": "Fall",
-      "prenom": "Mouha",
-      "telephone": "78123456",
-      "email": "moussan@gmail.com",
-      "password": "123",
-      "specialite": "chirurgie",
-      "avatar": "https://images.pexels.com/photos/3992656/pexels-photo-3992656.png?auto=compress&cs=tinysrgb&w=600",
-      "id_role": 2
     }
   ],
   "patients": [
@@ -115,16 +104,6 @@
       "id_secretaire": 1,
       "status": "Annulé",
       "specialite": "chirurgien"
-    },
-    {
-      "id": 4,
-      "date": "2025-03-01",
-      "heure": "00:13",
-      "id_docteur": 3,
-      "id_patient": 2,
-      "id_secretaire": 1,
-      "status": "en attente",
-      "specialite": "dentiste"
     }
   ]
 }

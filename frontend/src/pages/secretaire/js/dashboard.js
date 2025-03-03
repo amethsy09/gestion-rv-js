@@ -1,3 +1,4 @@
+// import { createModal } from "../../../components/modals/confirmation/modal_conf.js";
 import { getAppointments } from "../../../services/appointmentService.js";
 import { getDoctors } from "../../../services/doctorService.js";
 import { getPatients } from "../../../services/patientService.js";
@@ -6,6 +7,9 @@ import { getCurrentUser } from "../../../store/auth.js";
 document.addEventListener("DOMContentLoaded", async () => {
   displaySecretaireInfo();
   await loadDashboardData();
+  // const checkModal = document.getElementById("checkModal");
+  // const modal = createModal("erreur.png", "Oups ! il semble qu'il y'a erreur");
+  // checkModal.appendChild(modal);
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
