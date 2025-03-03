@@ -95,6 +95,7 @@ export async function handleAddPatientFormSubmit() {
     console.log(newPatient);
     closeAddPatientModal();
     form.reset();
+    return newPatient;
   } catch (error) {
     console.error("Erreur :", error);
   }

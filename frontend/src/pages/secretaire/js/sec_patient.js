@@ -1,3 +1,4 @@
+import { createModal } from "../../../components/modals/confirmation/modal_conf.js";
 import {
   closeAddPatientModal,
   handleAddPatientFormSubmit,
@@ -69,7 +70,14 @@ async function loadModal() {
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      await handleAddPatientFormSubmit();
+      const newPatient = await handleAddPatientFormSubmit();
+      const checkModal = document.getElementById("checkModal");
+      const modal = createModal(
+        "verifier.png",
+        `Dr ${newPatient.prenom} ${newPatient.nom} ajouter avec success`,
+        "blue"
+      );
+      checkModal.appendChild(modal);
     });
   } catch (error) {
     console.error("Erreur :", error);

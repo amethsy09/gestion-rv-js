@@ -1,3 +1,4 @@
+import { createModal } from "../../../components/modals/confirmation/modal_conf.js";
 import {
   closeAddRvModal,
   handleAddRvFormSubmit,
@@ -114,6 +115,13 @@ async function loadModal() {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       await handleAddRvFormSubmit();
+      const checkModal = document.getElementById("checkModal");
+      const modal = createModal(
+        "verifier.png",
+        `Nouvelle rv ajouter avec success`,
+        "blue"
+      );
+      checkModal.appendChild(modal);
     });
   } catch (error) {
     console.error("Erreur :", error);
