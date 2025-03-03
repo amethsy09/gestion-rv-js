@@ -1,7 +1,6 @@
 import { fetchData } from "../../../services/api.js";
 import { addDocteur } from "../../../services/doctorService.js";
 
-
 export function openAddDocteurModal() {
   const modal = document.getElementById("addDocteurModal");
   modal.classList.remove("hidden");
@@ -13,6 +12,7 @@ export function closeAddDocteurModal() {
 }
 
 function checkValidateFormAddDocteur(docteurData) {
+  const validStart = [77, 76, 70];
   const nomDocteurError = document.getElementById("nomDocteurError");
   const prenomDocteurError = document.getElementById("docteurPrenomError");
   const specialiteDocteurError = document.getElementById(
@@ -36,6 +36,7 @@ function checkValidateFormAddDocteur(docteurData) {
 
   const { nom, prenom, telephone, email, password, specialite, avatar } =
     docteurData;
+  let twoFirstNumber = parseInt(telephone.slice(0, 2));
 
   if (!nom) {
     nomDocteurError.textContent = "Veuillez saisir un nom";
@@ -53,8 +54,23 @@ function checkValidateFormAddDocteur(docteurData) {
     telephoneDocteurError.classList.add("text-red-500");
     isValid = false;
   }
-  if (!email) {
-    emailDocteurError.textContent = "Veuillez saisir un email";
+
+  if (telephone.length > 9) {
+    telephoneDocteurError.textContent =
+      "Le numéro ne peut pas dépasser 9 chiffres.";
+    telephoneDocteurError.classList.add("text-red-500");
+    isValid = false;
+  }
+
+  if (telephone && !validStart.includes(twoFirstNumber)) {
+    telephoneDocteurError.textContent =
+      "Le téléphone doit commencer par (77,76,70).";
+    telephoneDocteurError.classList.add("text-red-500");
+    isValid = false;
+  }
+
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    emailDocteurError.textContent = "Veuillez saisir un email valide";
     emailDocteurError.classList.add("text-red-500");
     isValid = false;
   }
@@ -76,7 +92,7 @@ function checkValidateFormAddDocteur(docteurData) {
   return isValid;
 }
 
-export async function handleAddDocteurFormSubmit() {
+export async function handleAddDocteurFormSubmit(e) {
   const form = document.getElementById("addDocteurForm");
   const formData = new FormData(form);
   const docteurData = {
@@ -95,9 +111,9 @@ export async function handleAddDocteurFormSubmit() {
   }
   try {
     const newDocteur = await addDocteur(docteurData);
-    console.log(newDocteur);
     closeAddDocteurModal();
     form.reset();
+    return newDocteur;
   } catch (error) {
     console.error("Erreur :", error);
   }
