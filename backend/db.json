@@ -104,6 +104,24 @@
       "id_secretaire": 1,
       "status": "Annulé",
       "specialite": "chirurgien"
+    },
+    {
+      "id": 4,
+      "date": "2025-03-04",
+      "heure": "10:00",
+      "id_docteur": 1,
+      "id_patient": 2,
+      "id_secretaire": 1,
+      "status": "en attente"
+    },
+    {
+      "id": 5,
+      "date": "2025-03-05",
+      "heure": "10:00",
+      "id_docteur": 1,
+      "id_patient": 2,
+      "id_secretaire": 1,
+      "status": "en attente"
     }
   ]
 }

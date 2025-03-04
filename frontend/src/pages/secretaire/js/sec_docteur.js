@@ -18,11 +18,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     const newDocteur = await handleAddDocteurFormSubmit(e);
     const checkModal = document.getElementById("checkModal");
-    const modal = createModal(
-      "verifier.png",
-      `Dr ${newDocteur.prenom} ${newDocteur.nom} ajouter avec success`,
-      "blue"
-    );
+    if (newDocteur) {
+      const modal = createModal(
+        "verifier.png",
+        `Dr ${newPatient.prenom} ${newPatient.nom} ajouter avec success`,
+        "blue"
+      );
+      checkModal.appendChild(modal);
+    }
     checkModal.appendChild(modal);
   });
 });
