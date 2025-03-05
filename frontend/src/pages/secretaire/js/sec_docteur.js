@@ -5,10 +5,16 @@ import {
   openAddDocteurModal,
 } from "../../../components/modals/docteurs/docteur_modal.js";
 import { getDoctors } from "../../../services/doctorService.js";
+import { paginate } from "../../../utils/pagination.js";
+
+let currentPage = 1;
+let itemsPerPage = 3;
+let doctors = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadDoctorsTable();
   await loadModal();
+  setupPaginationControls();
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -32,12 +38,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadDoctorsTable() {
   try {
-    const doctors = await getDoctors();
+    doctors = await getDoctors();
+    const { paginatedData, totalPages } = paginate(
+      doctors,
+      itemsPerPage,
+      currentPage
+    );
     const tableBody = document.getElementById("doctorsTableBody");
 
     tableBody.innerHTML = "";
 
-    doctors.forEach((doctor) => {
+    paginatedData.forEach((doctor) => {
       const row = document.createElement("tr");
       row.innerHTML = `
                   <td class="py-2 px-4"><img src="${doctor.avatar}" class="w-10 h-10 rounded-full object-cover"/></td>
@@ -57,6 +68,7 @@ async function loadDoctorsTable() {
               `;
       tableBody.appendChild(row);
     });
+    updatePaginationControls(currentPage, totalPages);
   } catch (error) {
     console.error("Erreur lors du chargement des docteurs :", error);
     alert("Une erreur s'est produite lors du chargement des docteurs.");
@@ -92,4 +104,36 @@ function openSidebar() {
 function closeSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.add("-translate-x-full");
+}
+
+function setupPaginationControls() {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+
+  prevButton.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      loadDoctorsTable();
+    }
+  });
+
+  nextButton.addEventListener("click", () => {
+    const { totalPages } = paginate(doctors, itemsPerPage, currentPage);
+    console.log(totalPages);
+
+    if (currentPage < totalPages) {
+      currentPage++;
+      loadDoctorsTable();
+    }
+  });
+}
+
+function updatePaginationControls(currentPage, totalPages) {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+  const pageInfo = document.getElementById("pageInfo");
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+  pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
 }
