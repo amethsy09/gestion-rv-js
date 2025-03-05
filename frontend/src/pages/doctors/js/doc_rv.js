@@ -2,6 +2,10 @@ import { showNotification } from "../../../components/notifications/notification
 import { updateRendezVousStatus } from "../../../services/appointmentService.js";
 import { getRendezVousAndPatientInfoByDocteur } from "../../../services/doctorService.js";
 import { getCurrentUser } from "../../../store/auth.js";
+import { paginate } from "../../../utils/pagination.js";
+
+let currentPage = 1;
+let itemsPerPage = 2;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const user = getCurrentUser();
@@ -14,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document
     .getElementById("rendezVousTableBody")
     .addEventListener("click", handleButtonClick);
+  setupPaginationControls(rendezVous);
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -193,8 +198,17 @@ function displayCards(rendezVous) {
 }
 
 function displayRendezVous(rendezVous) {
-  displayTable(rendezVous);
-  displayCards(rendezVous);
+  const { paginatedData, totalPages } = paginate(
+    rendezVous,
+    itemsPerPage,
+    currentPage
+  );
+  console.log(paginatedData);
+
+  displayTable(paginatedData);
+  displayCards(paginatedData);
+
+  updatePaginationControls(currentPage, totalPages);
 }
 
 function handleButtonClick(event) {
@@ -224,4 +238,33 @@ async function validerRendezVous(id) {
 async function refuserRendezVous(id) {
   showNotification("Rendez-vous refusé.", "error");
   await updateRendezVousStatus(id, "Annulé");
+}
+
+function setupPaginationControls(rendezVous) {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+  prevButton.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      displayRendezVous(rendezVous);
+    }
+  });
+
+  nextButton.addEventListener("click", () => {
+    const { totalPages } = paginate(rendezVous, itemsPerPage, currentPage);
+    if (currentPage < totalPages) {
+      currentPage++;
+      displayRendezVous(rendezVous);
+    }
+  });
+}
+
+function updatePaginationControls(currentPage, totalPages) {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+  const pageInfo = document.getElementById("pageInfo");
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+  pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
 }

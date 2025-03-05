@@ -5,10 +5,16 @@ import {
   openAddPatientModal,
 } from "../../../components/modals/patients/patient_modal.js";
 import { getPatients } from "../../../services/patientService.js";
+import { paginate } from "../../../utils/pagination.js";
+
+let currentPage = 1;
+let itemsPerPage = 2;
+let patients = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadPatientsTable();
   await loadModal();
+  setupPaginationControls();
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -17,11 +23,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadPatientsTable() {
   try {
-    const patients = await getPatients();
+    patients = await getPatients();
+    const { paginatedData, totalPages } = paginate(
+      patients,
+      itemsPerPage,
+      currentPage
+    );
     const tableBody = document.getElementById("patientsTableBody");
     tableBody.innerHTML = "";
 
-    patients.forEach((patient) => {
+    paginatedData.forEach((patient) => {
       const row = document.createElement("tr");
       row.classList.add("border-b", "font-medium", "hover:bg-gray-50");
       row.innerHTML = `
@@ -44,6 +55,7 @@ async function loadPatientsTable() {
             `;
       tableBody.appendChild(row);
     });
+    updatePaginationControls(currentPage, totalPages);
   } catch (error) {
     console.error("Erreur lors du chargement des patients :", error);
     alert("Une erreur s'est produite lors du chargement des patients.");
@@ -94,4 +106,36 @@ function openSidebar() {
 function closeSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.add("-translate-x-full");
+}
+
+function setupPaginationControls() {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+
+  prevButton.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      loadPatientsTable();
+    }
+  });
+
+  nextButton.addEventListener("click", () => {
+    const { totalPages } = paginate(patients, itemsPerPage, currentPage);
+    console.log(totalPages);
+
+    if (currentPage < totalPages) {
+      currentPage++;
+      loadPatientsTable();
+    }
+  });
+}
+
+function updatePaginationControls(currentPage, totalPages) {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+  const pageInfo = document.getElementById("pageInfo");
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+  pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
 }

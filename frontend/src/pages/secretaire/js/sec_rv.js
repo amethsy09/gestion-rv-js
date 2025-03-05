@@ -6,11 +6,17 @@ import {
   openAddRvModal,
 } from "../../../components/modals/rv/rv_modal.js";
 import { fetchData } from "../../../services/api.js";
+import { paginate } from "../../../utils/pagination.js";
+
+let currentPage = 1;
+let itemsPerPage = 3;
+let mappedAppointments = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadAppointmentsTable();
   await loadModal();
   await loadDoctorsAndPatients();
+  setupPaginationControls();
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -48,17 +54,17 @@ function mapAppointmentsData(appointments, doctors, patients) {
 async function loadAppointmentsTable() {
   try {
     const { appointments, doctors, patients } = await fetchAppointmentsData();
-    const mappedAppointments = mapAppointmentsData(
-      appointments,
-      doctors,
-      patients
+    mappedAppointments = mapAppointmentsData(appointments, doctors, patients);
+    const { paginatedData, totalPages } = paginate(
+      mappedAppointments,
+      itemsPerPage,
+      currentPage
     );
-    console.log(mappedAppointments);
 
     const tableBody = document.getElementById("appointmentsTableBody");
     tableBody.innerHTML = "";
 
-    mappedAppointments.forEach((appointment) => {
+    paginatedData.forEach((appointment) => {
       const row = document.createElement("tr");
       row.innerHTML = `
                 <td class="py-2 px-4">${appointment.id}</td>
@@ -88,6 +94,7 @@ async function loadAppointmentsTable() {
             `;
       tableBody.appendChild(row);
     });
+    updatePaginationControls(currentPage, totalPages);
   } catch (error) {
     console.error("Erreur lors du chargement des rendez-vous :", error);
     alert("Une erreur s'est produite lors du chargement des rendez-vous.");
@@ -138,4 +145,40 @@ function openSidebar() {
 function closeSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.add("-translate-x-full");
+}
+
+function setupPaginationControls() {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+
+  prevButton.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      loadAppointmentsTable();
+    }
+  });
+
+  nextButton.addEventListener("click", () => {
+    const { totalPages } = paginate(
+      mappedAppointments,
+      itemsPerPage,
+      currentPage
+    );
+    console.log(totalPages);
+
+    if (currentPage < totalPages) {
+      currentPage++;
+      loadAppointmentsTable();
+    }
+  });
+}
+
+function updatePaginationControls(currentPage, totalPages) {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+  const pageInfo = document.getElementById("pageInfo");
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+  pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
 }
