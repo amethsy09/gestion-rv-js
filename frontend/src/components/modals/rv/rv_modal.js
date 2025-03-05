@@ -79,7 +79,7 @@ export async function handleAddRvFormSubmit() {
     id_docteur: parseInt(formData.get("id_docteur")),
     id_patient: parseInt(formData.get("id_patient")),
     id_secretaire: 1,
-    status: "en attente",
+    status: "En attente",
   };
   if (!checkValidateFormAddRv(rvData)) {
     return;

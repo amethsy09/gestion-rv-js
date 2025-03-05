@@ -1,12 +1,15 @@
 import { getRendezVousAndDocteurInfoByDocteur } from "../../../services/patientService.js";
 import { getCurrentUser } from "../../../store/auth.js";
+import { paginate } from "../../../utils/pagination.js";
+
+let currentPage = 1;
+let itemsPerPage = 5;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const user = getCurrentUser();
   const rendezVous = await getRendezVousAndDocteurInfoByDocteur(user.id);
-//   console.log(rendezVous); 
-  
-  displayPatientAppointments(rendezVous);
+  setupPaginationControls(rendezVous);
+  loadPaginatedData(rendezVous);
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -15,14 +18,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function createAppointmentRow(rdv) {
   const row = document.createElement("tr");
-  row.className = "border-b";
+  row.className = "border-b hover:bg-gray-50";
   const statusColor =
     {
       "En attente": "bg-orange-50 text-orange-500",
       Accepté: "bg-green-50 text-green-500",
       Annulé: "bg-red-50 text-red-500",
-    }
-    [rdv.status] || "bg-gray-50";
+    }[rdv.status] || "bg-gray-50";
 
   row.innerHTML = `
     <td class="p-3">
@@ -51,6 +53,16 @@ function createAppointmentRow(rdv) {
   return row;
 }
 
+function loadPaginatedData(rendezVous) {
+  const { paginatedData, totalPages } = paginate(
+    rendezVous,
+    itemsPerPage,
+    currentPage
+  );
+  displayPatientAppointments(paginatedData);
+  updatePaginationControls(currentPage, totalPages);
+}
+
 function displayPatientAppointments(rendezVous) {
   const tbody = document.getElementById("rendezVousTableBody");
   tbody.innerHTML = "";
@@ -70,4 +82,34 @@ function openSidebar() {
 function closeSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.add("-translate-x-full");
+}
+
+function setupPaginationControls(rendezVous) {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+
+  prevButton.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      loadPaginatedData(rendezVous);
+    }
+  });
+
+  nextButton.addEventListener("click", () => {
+    const { totalPages } = paginate(rendezVous, itemsPerPage, currentPage);
+    if (currentPage < totalPages) {
+      currentPage++;
+      loadPaginatedData(rendezVous);
+    }
+  });
+}
+
+function updatePaginationControls(currentPage, totalPages) {
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+  const pageInfo = document.getElementById("pageInfo");
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+  pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
 }

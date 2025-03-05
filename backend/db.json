@@ -112,7 +112,7 @@
       "id_docteur": 1,
       "id_patient": 2,
       "id_secretaire": 1,
-      "status": "en attente"
+      "status": "En attente"
     },
     {
       "id": 5,
@@ -121,7 +121,7 @@
       "id_docteur": 1,
       "id_patient": 2,
       "id_secretaire": 1,
-      "status": "en attente"
+      "status": "En attente"
     }
   ]
 }
