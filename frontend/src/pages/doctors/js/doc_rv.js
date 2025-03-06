@@ -6,19 +6,23 @@ import { paginate } from "../../../utils/pagination.js";
 
 let currentPage = 1;
 let itemsPerPage = 2;
+let mappedAppointments = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   const user = getCurrentUser();
   displayDocteurInfo();
   const rendezVous = await getRendezVousAndPatientInfoByDocteur(user.id);
-  displayRendezVous(rendezVous);
+  mappedAppointments = rendezVous; // Stocker les rendez-vous dans une variable globale
+  setupPaginationControls();
+  setupSearchInput();
+  setupStatusFilter();
+  loadPaginatedData(mappedAppointments);
   document
     .getElementById("rendezVousTableBody")
     .addEventListener("click", handleOptionClick);
   document
     .getElementById("rendezVousTableBody")
     .addEventListener("click", handleButtonClick);
-  setupPaginationControls(rendezVous);
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -197,18 +201,40 @@ function displayCards(rendezVous) {
   });
 }
 
-function displayRendezVous(rendezVous) {
+function loadPaginatedData(appointments) {
   const { paginatedData, totalPages } = paginate(
-    rendezVous,
+    appointments,
     itemsPerPage,
     currentPage
   );
-  console.log(paginatedData);
-
-  displayTable(paginatedData);
-  displayCards(paginatedData);
-
+  if (paginatedData.length === 0) {
+    displayNoResultsMessage();
+  } else {
+    displayTable(paginatedData);
+    displayCards(paginatedData);
+  }
   updatePaginationControls(currentPage, totalPages);
+}
+
+function displayNoResultsMessage() {
+  const tbody = document.getElementById("rendezVousTableBody");
+  const cardsContainer = document.getElementById("rendezVousCards");
+
+  // Message pour le tableau
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="5" class="text-center py-4 text-gray-500">
+        Aucun rendez-vous trouvé.
+      </td>
+    </tr>
+  `;
+
+  // Message pour les cartes
+  cardsContainer.innerHTML = `
+    <div class="text-center py-4 text-gray-500">
+      Aucun rendez-vous trouvé.
+    </div>
+  `;
 }
 
 function handleButtonClick(event) {
@@ -240,21 +266,26 @@ async function refuserRendezVous(id) {
   await updateRendezVousStatus(id, "Annulé");
 }
 
-function setupPaginationControls(rendezVous) {
+function setupPaginationControls() {
   const prevButton = document.getElementById("prevPage");
   const nextButton = document.getElementById("nextPage");
+
   prevButton.addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
-      displayRendezVous(rendezVous);
+      loadPaginatedData(filterAndSortAppointments());
     }
   });
 
   nextButton.addEventListener("click", () => {
-    const { totalPages } = paginate(rendezVous, itemsPerPage, currentPage);
+    const { totalPages } = paginate(
+      mappedAppointments,
+      itemsPerPage,
+      currentPage
+    );
     if (currentPage < totalPages) {
       currentPage++;
-      displayRendezVous(rendezVous);
+      loadPaginatedData(filterAndSortAppointments());
     }
   });
 }
@@ -267,4 +298,53 @@ function updatePaginationControls(currentPage, totalPages) {
   prevButton.disabled = currentPage === 1;
   nextButton.disabled = currentPage === totalPages;
   pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
+}
+
+function filterByStatus(appointments, status) {
+  if (status === "Tous") return appointments;
+  return appointments.filter((appointment) => appointment.status === status);
+}
+
+function setupStatusFilter() {
+  const statusFilter = document.getElementById("statusFilter");
+
+  statusFilter.addEventListener("change", (event) => {
+    const status = event.target.value;
+    currentPage = 1;
+    loadPaginatedData(filterAndSortAppointments(status));
+  });
+}
+
+function setupSearchInput() {
+  const searchInput = document.getElementById("searchInput");
+
+  searchInput.addEventListener("input", (event) => {
+    const searchQuery = event.target.value.toLowerCase();
+    currentPage = 1;
+    loadPaginatedData(filterAndSortAppointments(null, searchQuery));
+  });
+}
+
+function filterAppointments(appointments, searchQuery) {
+  if (!searchQuery) return appointments;
+  return appointments.filter((appointment) => {
+    return appointment.patientNom.toLowerCase().includes(searchQuery);
+  });
+}
+
+function filterAndSortAppointments(status = null, searchQuery = null) {
+  let filteredAppointments = mappedAppointments;
+
+  if (status) {
+    filteredAppointments = filterByStatus(filteredAppointments, status);
+  }
+
+  if (searchQuery) {
+    filteredAppointments = filterAppointments(
+      filteredAppointments,
+      searchQuery
+    );
+  }
+
+  return filteredAppointments;
 }

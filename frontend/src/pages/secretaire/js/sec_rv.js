@@ -97,37 +97,47 @@ async function loadAppointmentsTable(searchQuery = "", status = "Tous") {
 
     const tableBody = document.getElementById("appointmentsTableBody");
     tableBody.innerHTML = "";
-    paginatedData.forEach((appointment) => {
-      const row = document.createElement("tr");
-      row.className = "border-b p";
-      row.innerHTML = `
-                <td class="py-2 px-4">${appointment.id}</td>
-                <td class="py-2 px-4">${appointment.patient_nom}</td>
-                <td class="py-2 px-4">${appointment.docteur_nom}</td>
-                <td class="py-2 px-4">${appointment.date}</td>
-                <td class="py-2 px-4">${appointment.heure}</td>
-                <td class="py-2 px-4">
-                    <span class="px-2 py-1 rounded-full ${
-                      appointment.status === "Accepté"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }">
-                        ${appointment.status}
-                    </span>
-                </td>
-                <td class="py-2 px-4">
-                   <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
-                    <span>Modifier</span>
-                    <i class="ri-edit-box-line"></i>
-                    </button>
-                    <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
-                    <span>Supprimer</span>
-                    <i class="ri-delete-bin-6-line"></i>
-                    </button>
-                </td>
-            `;
-      tableBody.appendChild(row);
-    });
+    if (paginatedData.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="7" class="text-center py-4 text-gray-500">
+            Aucun rendez-vous trouvé.
+          </td>
+        </tr>
+      `;
+    } else {
+      paginatedData.forEach((appointment) => {
+        const row = document.createElement("tr");
+        row.className = "border-b p";
+        row.innerHTML = `
+          <td class="py-2 px-4">${appointment.id}</td>
+          <td class="py-2 px-4">${appointment.patient_nom}</td>
+          <td class="py-2 px-4">${appointment.docteur_nom}</td>
+          <td class="py-2 px-4">${appointment.date}</td>
+          <td class="py-2 px-4">${appointment.heure}</td>
+          <td class="py-2 px-4">
+              <span class="px-2 py-1 rounded-full ${
+                appointment.status === "Accepté"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }">
+                  ${appointment.status}
+              </span>
+          </td>
+          <td class="py-2 px-4">
+             <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
+              <span>Modifier</span>
+              <i class="ri-edit-box-line"></i>
+              </button>
+              <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
+              <span>Supprimer</span>
+              <i class="ri-delete-bin-6-line"></i>
+              </button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
     updatePaginationControls(currentPage, totalPages);
   } catch (error) {
     console.error("Erreur lors du chargement des rendez-vous :", error);
