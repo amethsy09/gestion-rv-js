@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>page patient</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.min.css"
       rel="stylesheet"
     />
-</head>
-<body class="flex h-screen">
-      <!-- Sidebar -->
-      <div
+  </head>
+  <body class="flex h-screen">
+    <!-- Sidebar -->
+    <div
       id="sidebar"
       class="flex flex-col justify-between p-3 fixed left-0 shadow-sm bg-white h-full w-64 lg:w-52 md:flex transform transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 z-50"
     >
@@ -173,16 +174,14 @@
       <div class="mt-3 px-4">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <div
-            class="bg-white p-3 rounded-lg shadow-md flex flex-col justify-around"
+            class="bg-white p-3 rounded-lg shadow-md flex flex-col justify-around relative"
           >
             <img
               id="profilPatient"
-              class="w-28 h-28 rounded-full object-cover"
+              class="w-32 h-32 rounded-full object-cover"
               alt=""
             />
-            <h3 class="text-lg font-semibold text-gray-800" id="nomPatient">
-              Seydina AB Thiam
-            </h3>
+            <h3 class="text-xl font-medium text-gray-800" id="nomPatient"></h3>
             <p class="text-gray-600">
               <i class="ri-stethoscope-line"></i>
               <span id="rolePatient">Patient</span>
@@ -201,6 +200,11 @@
                 <span id="numPatient">776578909</span>
               </p>
             </div>
+            <div
+              class="w-12 h-12 rounded-full bg-blue-50 flex justify-center items-center cursor-pointer absolute top-2 right-2"
+            >
+              <i class="ri-arrow-right-up-box-line text-xl"></i>
+            </div>
           </div>
           <div class="bg-white p-3 rounded-lg shadow-md">
             <h3 class="text-lg font-semibold text-gray-500">
@@ -215,7 +219,9 @@
     <div id="notifications" class="fixed top-4 right-4 space-y-2"></div>
 
     <script type="module" src="/frontend/src/router/router.js"></script>
-    <script type="module" src="/frontend/src/pages/patients/js/dashboard.js"></script>
-
-</body>
+    <script
+      type="module"
+      src="/frontend/src/pages/patients/js/dashboard.js"
+    ></script>
+  </body>
 </html>
