@@ -15,15 +15,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadPatientsTable();
   await loadModal();
   setupPaginationControls();
+  setupSearchInput();
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
   sidebarClose.addEventListener("click", closeSidebar);
 });
 
-async function loadPatientsTable() {
+async function loadPatientsTable(searchQuery = "") {
   try {
     patients = await getPatients();
+    if (searchQuery) {
+      patients = filterPatients(patients, searchQuery);
+    }
     const { paginatedData, totalPages } = paginate(
       patients,
       itemsPerPage,
@@ -115,7 +119,7 @@ function setupPaginationControls() {
   prevButton.addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
-      loadPatientsTable();
+      loadPatientsTable(document.getElementById("searchInput").value);
     }
   });
 
@@ -125,7 +129,7 @@ function setupPaginationControls() {
 
     if (currentPage < totalPages) {
       currentPage++;
-      loadPatientsTable();
+      loadPatientsTable(document.getElementById("searchInput").value);
     }
   });
 }
@@ -138,4 +142,23 @@ function updatePaginationControls(currentPage, totalPages) {
   prevButton.disabled = currentPage === 1;
   nextButton.disabled = currentPage === totalPages;
   pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
+}
+
+function filterPatients(patients, searchQuery) {
+  if (!searchQuery) return patients;
+  return patients.filter((patient) => {
+    return (
+      patient.prenom.toLowerCase().includes(searchQuery) ||
+      patient.nom.toLowerCase().includes(searchQuery)
+    );
+  });
+}
+
+function setupSearchInput() {
+  const searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("input", (event) => {
+    const searchQuery = event.target.value.toLowerCase();
+    currentPage = 1;
+    loadPatientsTable(searchQuery);
+  });
 }

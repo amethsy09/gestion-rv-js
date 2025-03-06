@@ -11,12 +11,16 @@ import { paginate } from "../../../utils/pagination.js";
 let currentPage = 1;
 let itemsPerPage = 3;
 let mappedAppointments = [];
+let sortByDateAsc = true;
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadAppointmentsTable();
   await loadModal();
   await loadDoctorsAndPatients();
   setupPaginationControls();
+  setupSearchInput();
+  setupStatusFilter();
+  setupSortButtons();
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -51,10 +55,40 @@ function mapAppointmentsData(appointments, doctors, patients) {
   });
 }
 
-async function loadAppointmentsTable() {
+function setupSearchInput() {
+  const searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("input", (event) => {
+    const searchQuery = event.target.value.toLowerCase();
+    currentPage = 1;
+    loadAppointmentsTable(searchQuery);
+  });
+}
+
+function filterAppointments(appointments, searchQuery) {
+  if (!searchQuery) return appointments;
+  return appointments.filter((appointment) => {
+    return (
+      appointment.patient_nom.toLowerCase().includes(searchQuery) ||
+      appointment.docteur_nom.toLowerCase().includes(searchQuery)
+    );
+  });
+}
+
+async function loadAppointmentsTable(searchQuery = "", status = "Tous") {
   try {
     const { appointments, doctors, patients } = await fetchAppointmentsData();
     mappedAppointments = mapAppointmentsData(appointments, doctors, patients);
+    if (searchQuery) {
+      mappedAppointments = filterAppointments(mappedAppointments, searchQuery);
+    }
+    mappedAppointments = filterByStatus(mappedAppointments, status);
+
+    if (sortByDateAsc !== null) {
+      mappedAppointments = sortAppointmentsByDate(
+        mappedAppointments,
+        sortByDateAsc
+      );
+    }
     const { paginatedData, totalPages } = paginate(
       mappedAppointments,
       itemsPerPage,
@@ -63,9 +97,9 @@ async function loadAppointmentsTable() {
 
     const tableBody = document.getElementById("appointmentsTableBody");
     tableBody.innerHTML = "";
-
     paginatedData.forEach((appointment) => {
       const row = document.createElement("tr");
+      row.className = "border-b p";
       row.innerHTML = `
                 <td class="py-2 px-4">${appointment.id}</td>
                 <td class="py-2 px-4">${appointment.patient_nom}</td>
@@ -154,7 +188,7 @@ function setupPaginationControls() {
   prevButton.addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
-      loadAppointmentsTable();
+      loadAppointmentsTable(document.getElementById("searchInput").value);
     }
   });
 
@@ -168,7 +202,7 @@ function setupPaginationControls() {
 
     if (currentPage < totalPages) {
       currentPage++;
-      loadAppointmentsTable();
+      loadAppointmentsTable(document.getElementById("searchInput").value);
     }
   });
 }
@@ -181,4 +215,39 @@ function updatePaginationControls(currentPage, totalPages) {
   prevButton.disabled = currentPage === 1;
   nextButton.disabled = currentPage === totalPages;
   pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
+}
+
+function filterByStatus(appointments, status) {
+  if (status === "Tous") return appointments;
+  return appointments.filter((appointment) => appointment.status === status);
+}
+
+function setupStatusFilter() {
+  const statusFilter = document.getElementById("statusFilter");
+
+  statusFilter.addEventListener("change", (event) => {
+    const status = event.target.value;
+    currentPage = 1;
+    loadAppointmentsTable(document.getElementById("searchInput").value, status);
+  });
+}
+
+function sortAppointmentsByDate(appointments, ascending = true) {
+  return appointments.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return ascending ? dateA - dateB : dateB - dateA;
+  });
+}
+
+function setupSortButtons() {
+  const sortDateButton = document.getElementById("sortDate");
+
+  sortDateButton.addEventListener("click", () => {
+    sortByDateAsc = !sortByDateAsc;
+    loadAppointmentsTable(
+      document.getElementById("searchInput").value,
+      document.getElementById("statusFilter").value
+    );
+  });
 }
