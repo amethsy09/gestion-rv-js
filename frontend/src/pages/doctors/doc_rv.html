@@ -106,15 +106,34 @@
       <!-- Content-1 -->
       <div class="mt-6 px-4">
         <div class="flex flex-col gap-4 bg-white p-3 rounded">
-          <div class="flex items-center gap-3">
-            <div
-              class="w-11 h-11 rounded bg-blue-50 flex justify-center items-center cursor-pointer"
-            >
-              <i
-                class="ri-calendar-todo-line text-blue-500 font-medium text-xl"
-              ></i>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3 mb-3">
+              <div
+                class="w-11 h-11 rounded bg-blue-50 flex justify-center items-center cursor-pointer"
+              >
+                <i
+                  class="ri-calendar-todo-line text-blue-500 font-medium text-xl"
+                ></i>
+              </div>
+              <p class="font-medium text-lg">Rendez-vous</p>
             </div>
-            <p class="font-medium text-lg">Rendez-vous</p>
+            <div class="px-3 flex flex-col md:flex-row gap-4 items-center">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Rechercher par patient..."
+                class="px-3 py-2 bg-gray-50 rounded-3xl focus:outline-none w-full lg:w-96 shadow"
+              />
+              <select
+                id="statusFilter"
+                class="px-3 py-2 rounded border border-gray-100 focus:outline-none"
+              >
+                <option value="Tous">Tous les statuts</option>
+                <option value="Accepté">Accepté</option>
+                <option value="En attente">En attente</option>
+                <option value="Annulé">Annulé</option>
+              </select>
+            </div>
           </div>
           <div class="hidden md:block overflow-x-auto overflow-visible">
             <table class="min-w-full bg-white rounded-lg overflow-hidden">

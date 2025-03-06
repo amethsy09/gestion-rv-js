@@ -50,10 +50,19 @@ async function loadDoctorsTable(searchQuery = "") {
     );
     const tableBody = document.getElementById("doctorsTableBody");
     tableBody.innerHTML = "";
-    paginatedData.forEach((doctor) => {
-      const row = document.createElement("tr");
-      row.className = "border-b border-gray-100 hover:bg-slate-50";
-      row.innerHTML = `
+    if (paginatedData.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="7" class="text-center py-4 text-gray-500">
+            Aucun docteur trouvé.
+          </td>
+        </tr>
+      `;
+    } else {
+      paginatedData.forEach((doctor) => {
+        const row = document.createElement("tr");
+        row.className = "border-b border-gray-100 hover:bg-slate-50";
+        row.innerHTML = `
                   <td class="py-2 px-4"><img src="${doctor.avatar}" class="w-10 h-10 rounded-full object-cover"/></td>
                   <td class="py-2 px-4">${doctor.prenom}</td>
                   <td class="py-2 px-4">${doctor.nom}</td>
@@ -70,9 +79,10 @@ async function loadDoctorsTable(searchQuery = "") {
                       </button>
                   </td>
               `;
-      tableBody.appendChild(row);
-    });
-    updatePaginationControls(currentPage, totalPages);
+        tableBody.appendChild(row);
+      });
+      updatePaginationControls(currentPage, totalPages);
+    }
   } catch (error) {
     console.error("Erreur lors du chargement des docteurs :", error);
     alert("Une erreur s'est produite lors du chargement des docteurs.");
