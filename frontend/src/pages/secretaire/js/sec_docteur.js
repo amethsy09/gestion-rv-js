@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadDoctorsTable();
   await loadModal();
   setupPaginationControls();
+  setupSearchInput();
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -36,22 +37,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-async function loadDoctorsTable() {
+async function loadDoctorsTable(searchQuery = "") {
   try {
     doctors = await getDoctors();
+    if (searchQuery) {
+      doctors = filterDocteurs(doctors, searchQuery);
+    }
     const { paginatedData, totalPages } = paginate(
       doctors,
       itemsPerPage,
       currentPage
     );
     const tableBody = document.getElementById("doctorsTableBody");
-
     tableBody.innerHTML = "";
-
     paginatedData.forEach((doctor) => {
       const row = document.createElement("tr");
+      row.className = "border-b border-gray-100 hover:bg-slate-50";
       row.innerHTML = `
                   <td class="py-2 px-4"><img src="${doctor.avatar}" class="w-10 h-10 rounded-full object-cover"/></td>
+                  <td class="py-2 px-4">${doctor.prenom}</td>
                   <td class="py-2 px-4">${doctor.nom}</td>
                   <td class="py-2 px-4">${doctor.email}</td>
                   <td class="py-2 px-4">${doctor.specialite}</td>
@@ -113,17 +117,15 @@ function setupPaginationControls() {
   prevButton.addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
-      loadDoctorsTable();
+      loadDoctorsTable(document.getElementById("searchInput").value);
     }
   });
 
   nextButton.addEventListener("click", () => {
     const { totalPages } = paginate(doctors, itemsPerPage, currentPage);
-    console.log(totalPages);
-
     if (currentPage < totalPages) {
       currentPage++;
-      loadDoctorsTable();
+      loadDoctorsTable(document.getElementById("searchInput").value);
     }
   });
 }
@@ -136,4 +138,23 @@ function updatePaginationControls(currentPage, totalPages) {
   prevButton.disabled = currentPage === 1;
   nextButton.disabled = currentPage === totalPages;
   pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
+}
+
+function filterDocteurs(docteurs, searchQuery) {
+  if (!searchQuery) return docteurs;
+  return docteurs.filter((docteur) => {
+    return (
+      docteur.prenom.toLowerCase().includes(searchQuery) ||
+      docteur.nom.toLowerCase().includes(searchQuery)
+    );
+  });
+}
+
+function setupSearchInput() {
+  const searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("input", (event) => {
+    const searchQuery = event.target.value.toLowerCase();
+    currentPage = 1;
+    loadDoctorsTable(searchQuery);
+  });
 }
