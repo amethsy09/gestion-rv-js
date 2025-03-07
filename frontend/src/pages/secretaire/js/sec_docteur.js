@@ -2,9 +2,10 @@ import { createModal } from "../../../components/modals/confirmation/modal_conf.
 import {
   closeAddDocteurModal,
   handleAddDocteurFormSubmit,
+  handleUpdateDoctor,
   openAddDocteurModal,
 } from "../../../components/modals/docteurs/docteur_modal.js";
-import { getDoctors } from "../../../services/doctorService.js";
+import { deleteDocteur, getDoctors } from "../../../services/doctorService.js";
 import { paginate } from "../../../utils/pagination.js";
 
 let currentPage = 1;
@@ -21,19 +22,31 @@ document.addEventListener("DOMContentLoaded", async () => {
   sidebarDeviceButton.addEventListener("click", openSidebar);
   sidebarClose.addEventListener("click", closeSidebar);
   const form = document.getElementById("addDocteurForm");
+  form.setAttribute("data-action", "add");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const newDocteur = await handleAddDocteurFormSubmit(e);
-    const checkModal = document.getElementById("checkModal");
-    if (newDocteur) {
-      const modal = createModal(
-        "verifier.png",
-        `Dr ${newPatient.prenom} ${newPatient.nom} ajouter avec success`,
-        "blue"
-      );
-      checkModal.appendChild(modal);
+    const action = form.getAttribute("data-action");
+    if (action === "add") {
+      console.log("bon");
+      console.log(action);
+      const newDocteur = await handleAddDocteurFormSubmit();
+      const checkModal = document.getElementById("checkModal");
+      if (newDocteur) {
+        const modal = createModal(
+          "verifier.png",
+          `Dr ${newDocteur.prenom} ${newDocteur.nom} ajouté avec succès`,
+          "blue"
+        );
+        checkModal.appendChild(modal);
+      }
+    } else if (action === "edit") {
+      const doctorId = form.getAttribute("data-doctor-id");
+      const updatedDoctor = await handleUpdateDoctor(doctorId);
+      if (updatedDoctor) {
+        closeAddDocteurModal();
+        loadDoctorsTable();
+      }
     }
-    checkModal.appendChild(modal);
   });
 });
 
@@ -60,11 +73,11 @@ async function loadDoctorsTable(searchQuery = "") {
                   <td class="py-2 px-4">${doctor.email}</td>
                   <td class="py-2 px-4">${doctor.specialite}</td>
                   <td class="py-2 px-4">
-                      <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
+                      <button data-id="${doctor.id}" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 edit-button">
                       <span>Modifier</span>
                       <i class="ri-edit-box-line"></i>
                       </button>
-                      <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
+                      <button data-id="${doctor.id}" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 delete-button">
                       <span>Supprimer</span>
                       <i class="ri-delete-bin-6-line"></i>
                       </button>
@@ -72,10 +85,64 @@ async function loadDoctorsTable(searchQuery = "") {
               `;
       tableBody.appendChild(row);
     });
+    document.querySelectorAll(".edit-button").forEach((button) => {
+      button.addEventListener("click", async (e) => {
+        const doctorId = e.target.closest("button").dataset.id;
+        await handleEditDoctor(doctorId);
+      });
+    });
+    document.querySelectorAll(".delete-button").forEach((button) => {
+      button.addEventListener("click", async (e) => {
+        const doctorId = e.target.closest("button").dataset.id;
+        await handleDeleteDoctor(doctorId);
+      });
+    });
     updatePaginationControls(currentPage, totalPages);
   } catch (error) {
     console.error("Erreur lors du chargement des docteurs :", error);
     alert("Une erreur s'est produite lors du chargement des docteurs.");
+  }
+}
+
+async function handleEditDoctor(doctorId) {
+  const doctor = doctors.find((d) => d.id == doctorId);
+  if (!doctor) return;
+
+  document.getElementById("docteurNom").value = doctor.nom;
+  document.getElementById("docteurPrenom").value = doctor.prenom;
+  document.getElementById("docteurEmail").value = doctor.email;
+  document.getElementById("docteurTelephone").value = doctor.telephone;
+  document.getElementById("docteurSpecialite").value = doctor.specialite;
+  document.getElementById("docteurAvatar").value = doctor.avatar;
+  document.getElementById("docteurPassword").value = doctor.password;
+
+  openAddDocteurModal();
+
+  const submitButton = document.querySelector(
+    "#addDocteurForm button[type='submit']"
+  );
+  submitButton.textContent = "Modifier";
+  submitButton.innerHTML = `Modifier <i class="ri-edit-box-line"></i>`;
+
+  const form = document.getElementById("addDocteurForm");
+  form.setAttribute("data-action", "edit");
+  form.setAttribute("data-doctor-id", doctorId);
+}
+
+async function handleDeleteDoctor(doctorId) {
+  const confirmDelete = confirm(
+    "Êtes-vous sûr de vouloir supprimer ce médecin ?"
+  );
+  if (!confirmDelete) return;
+
+  try {
+    console.log("ID du médecin à supprimer :", doctorId);
+    const success = await deleteDocteur(doctorId);
+    if (success) {
+      loadDoctorsTable();
+    }
+  } catch (error) {
+    console.error("Erreur :", error);
   }
 }
 

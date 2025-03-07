@@ -13,24 +13,35 @@
   ],
   "docteurs": [
     {
-      "id": "1",
       "nom": "Thiam",
       "prenom": "Samba",
-      "telephone": "77 678 90 76",
-      "email": "sambathiam@gmail.com",
+      "telephone": "776789076",
+      "email": "sambathiam66@gmail.com",
       "password": "ridendo",
       "specialite": "dentiste",
       "avatar": "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=600",
-      "id_role": 2
+      "id_role": 2,
+      "id": "1"
     },
     {
       "id": "2",
       "nom": "Thiam",
       "prenom": "Ousmane",
-      "telephone": "958777095",
-      "email": "ousmane025@gmail.com",
+      "telephone": "778777095",
+      "email": "ousmane25@gmail.com",
       "password": "liverpool",
       "specialite": "chirurgien",
+      "avatar": "https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "id_role": 2
+    },
+    {
+      "id": "3",
+      "nom": "Ndiaye",
+      "prenom": "Morales",
+      "telephone": "778907658",
+      "email": "ridendo060@gmail.com",
+      "password": "ridendo",
+      "specialite": "Neurologue",
       "avatar": "https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600",
       "id_role": 2
     }
@@ -87,13 +98,12 @@
   "rendez-vous": [
     {
       "id": "1",
-      "date": "2025-01-01",
-      "heure": "10:00",
+      "date": "2025-03-16",
+      "heure": "12:00",
       "id_docteur": 1,
       "id_patient": 1,
       "id_secretaire": 1,
-      "status": "Accepté",
-      "specialite": "dentiste"
+      "status": "En attente"
     },
     {
       "id": "3",
@@ -106,7 +116,7 @@
       "specialite": "chirurgien"
     },
     {
-      "id": 4,
+      "id": "4",
       "date": "2025-03-04",
       "heure": "10:00",
       "id_docteur": 1,
@@ -116,8 +126,8 @@
     },
     {
       "id": 5,
-      "date": "2025-03-05",
-      "heure": "10:00",
+      "date": "2025-03-08",
+      "heure": "08:00",
       "id_docteur": 1,
       "id_patient": 2,
       "id_secretaire": 1,

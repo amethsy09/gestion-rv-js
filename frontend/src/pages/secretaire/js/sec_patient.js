@@ -36,10 +36,19 @@ async function loadPatientsTable(searchQuery = "") {
     const tableBody = document.getElementById("patientsTableBody");
     tableBody.innerHTML = "";
 
-    paginatedData.forEach((patient) => {
-      const row = document.createElement("tr");
-      row.classList.add("border-b", "font-medium", "hover:bg-gray-50");
-      row.innerHTML = `
+    if (paginatedData.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="7" class="text-center py-4 text-gray-500">
+            Aucun patient trouvé.
+          </td>
+        </tr>
+      `;
+    } else {
+      paginatedData.forEach((patient) => {
+        const row = document.createElement("tr");
+        row.classList.add("border-b", "font-medium", "hover:bg-gray-50");
+        row.innerHTML = `
                 <td class="py-2 px-4"><img src="${patient.avatar}" class="w-10 h-10 rounded-full object-cover"/></td>
                 <td class="py-2 px-4">${patient.nom}</td>
                 <td class="py-2 px-4">${patient.prenom}</td>
@@ -57,9 +66,10 @@ async function loadPatientsTable(searchQuery = "") {
                     </button>
                 </td>
             `;
-      tableBody.appendChild(row);
-    });
-    updatePaginationControls(currentPage, totalPages);
+        tableBody.appendChild(row);
+      });
+      updatePaginationControls(currentPage, totalPages);
+    }
   } catch (error) {
     console.error("Erreur lors du chargement des patients :", error);
     alert("Une erreur s'est produite lors du chargement des patients.");

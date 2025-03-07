@@ -4,12 +4,16 @@ import { paginate } from "../../../utils/pagination.js";
 
 let currentPage = 1;
 let itemsPerPage = 5;
+let mappedAppointments = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   const user = getCurrentUser();
   const rendezVous = await getRendezVousAndDocteurInfoByDocteur(user.id);
-  setupPaginationControls(rendezVous);
-  loadPaginatedData(rendezVous);
+  mappedAppointments = rendezVous; // Stocker les rendez-vous dans une variable globale
+  setupPaginationControls();
+  setupSearchInput();
+  setupStatusFilter();
+  loadPaginatedData(mappedAppointments);
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -53,9 +57,9 @@ function createAppointmentRow(rdv) {
   return row;
 }
 
-function loadPaginatedData(rendezVous) {
+function loadPaginatedData(appointments) {
   const { paginatedData, totalPages } = paginate(
-    rendezVous,
+    appointments,
     itemsPerPage,
     currentPage
   );
@@ -67,11 +71,20 @@ function displayPatientAppointments(rendezVous) {
   const tbody = document.getElementById("rendezVousTableBody");
   tbody.innerHTML = "";
 
-  rendezVous.forEach((rdv) => {
-    const row = createAppointmentRow(rdv);
-
-    tbody.appendChild(row);
-  });
+  if (rendezVous.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" class="text-center py-4 text-gray-500">
+          Aucun rendez-vous trouvé.
+        </td>
+      </tr>
+    `;
+  } else {
+    rendezVous.forEach((rdv) => {
+      const row = createAppointmentRow(rdv);
+      tbody.appendChild(row);
+    });
+  }
 }
 
 function openSidebar() {
@@ -84,22 +97,26 @@ function closeSidebar() {
   sidebar.classList.add("-translate-x-full");
 }
 
-function setupPaginationControls(rendezVous) {
+function setupPaginationControls() {
   const prevButton = document.getElementById("prevPage");
   const nextButton = document.getElementById("nextPage");
 
   prevButton.addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
-      loadPaginatedData(rendezVous);
+      loadPaginatedData(filterAndSortAppointments());
     }
   });
 
   nextButton.addEventListener("click", () => {
-    const { totalPages } = paginate(rendezVous, itemsPerPage, currentPage);
+    const { totalPages } = paginate(
+      mappedAppointments,
+      itemsPerPage,
+      currentPage
+    );
     if (currentPage < totalPages) {
       currentPage++;
-      loadPaginatedData(rendezVous);
+      loadPaginatedData(filterAndSortAppointments());
     }
   });
 }
@@ -112,4 +129,53 @@ function updatePaginationControls(currentPage, totalPages) {
   prevButton.disabled = currentPage === 1;
   nextButton.disabled = currentPage === totalPages;
   pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
+}
+
+function filterByStatus(appointments, status) {
+  if (status === "Tous") return appointments;
+  return appointments.filter((appointment) => appointment.status === status);
+}
+
+function setupStatusFilter() {
+  const statusFilter = document.getElementById("statusFilter");
+
+  statusFilter.addEventListener("change", (event) => {
+    const status = event.target.value;
+    currentPage = 1;
+    loadPaginatedData(filterAndSortAppointments(status));
+  });
+}
+
+function setupSearchInput() {
+  const searchInput = document.getElementById("searchInput");
+
+  searchInput.addEventListener("input", (event) => {
+    const searchQuery = event.target.value.toLowerCase();
+    currentPage = 1;
+    loadPaginatedData(filterAndSortAppointments(null, searchQuery));
+  });
+}
+
+function filterAppointments(appointments, searchQuery) {
+  if (!searchQuery) return appointments;
+  return appointments.filter((appointment) => {
+    return appointment.docteurNom.toLowerCase().includes(searchQuery);
+  });
+}
+
+function filterAndSortAppointments(status = null, searchQuery = null) {
+  let filteredAppointments = mappedAppointments;
+
+  if (status) {
+    filteredAppointments = filterByStatus(filteredAppointments, status);
+  }
+
+  if (searchQuery) {
+    filteredAppointments = filterAppointments(
+      filteredAppointments,
+      searchQuery
+    );
+  }
+
+  return filteredAppointments;
 }
