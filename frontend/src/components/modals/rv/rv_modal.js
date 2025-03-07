@@ -1,5 +1,5 @@
 import { fetchData } from "../../../services/api.js";
-import { addAppointment } from "../../../services/appointmentService.js";
+import { addAppointment, updateAppointment } from "../../../services/appointmentService.js";
 import { getDoctors } from "../../../services/doctorService.js";
 import { getPatients } from "../../../services/patientService.js";
 import { createModal } from "../confirmation/modal_conf.js";
@@ -12,6 +12,10 @@ export function openAddRvModal() {
 export function closeAddRvModal() {
   const modal = document.getElementById("addRvModal");
   modal.classList.add("hidden");
+  const form = document.getElementById("addRvForm");
+  form.reset();
+  form.setAttribute("data-action", "add");
+  form.removeAttribute("data-appointment-id");
 }
 
 function checkValidateFormAddRv(rvData) {
@@ -144,5 +148,31 @@ export async function loadDoctorsAndPatients() {
     alert(
       "Une erreur s'est produite lors du chargement des docteurs ou des patients."
     );
+  }
+}
+export async function handleUpdateAppointment(appointmentId) {
+  const form = document.getElementById("addRvForm");
+  const formData = new FormData(form);
+  const updatedAppointmentData = {
+    id: appointmentId,
+    date: formData.get("date"),
+    heure: formData.get("heure"),
+    id_docteur: parseInt(formData.get("id_docteur")),
+    id_patient: parseInt(formData.get("id_patient")),
+    id_secretaire: 1,
+    status: "En attente",
+  };
+
+  if (!checkValidateFormAddRv(updatedAppointmentData)) {
+    return;
+  }
+
+  try {
+    const updatedAppointment = await updateAppointment(appointmentId, updatedAppointmentData);
+    closeAddRvModal();
+    loadAppointmentsTable();
+    return updatedAppointment;
+  } catch (error) {
+    console.error("Erreur :", error);
   }
 }
