@@ -1,5 +1,5 @@
 import { fetchData } from "../../../services/api.js";
-import { addDocteur } from "../../../services/doctorService.js";
+import { addDocteur, updateDocteur } from "../../../services/doctorService.js";
 
 export function openAddDocteurModal() {
   const modal = document.getElementById("addDocteurModal");
@@ -9,6 +9,17 @@ export function openAddDocteurModal() {
 export function closeAddDocteurModal() {
   const modal = document.getElementById("addDocteurModal");
   modal.classList.add("hidden");
+
+  const form = document.getElementById("addDocteurForm");
+  form.reset();
+  form.setAttribute("data-action", "add");
+  form.removeAttribute("data-doctor-id");
+
+  const submitButton = document.querySelector(
+    "#addDocteurForm button[type='submit']"
+  );
+  submitButton.textContent = "Ajouter";
+  submitButton.innerHTML = `Ajouter <i class="ri-apps-2-add-line"></i>`;
 }
 
 function checkValidateFormAddDocteur(docteurData) {
@@ -92,8 +103,9 @@ function checkValidateFormAddDocteur(docteurData) {
   return isValid;
 }
 
-export async function handleAddDocteurFormSubmit(e) {
+export async function handleAddDocteurFormSubmit() {
   const form = document.getElementById("addDocteurForm");
+  form.setAttribute("data-action", "add");
   const formData = new FormData(form);
   const docteurData = {
     id: await generateId(),
@@ -124,4 +136,31 @@ async function generateId() {
   const id =
     docteurs.length > 0 ? parseInt(docteurs[docteurs.length - 1].id) + 1 : 1;
   return id;
+}
+
+export async function handleUpdateDoctor(doctorId) {
+  const form = document.getElementById("addDocteurForm");
+  const formData = new FormData(form);
+  const updatedDoctorData = {
+    id: doctorId,
+    nom: formData.get("nom"),
+    prenom: formData.get("prenom"),
+    telephone: formData.get("telephone"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    specialite: formData.get("specialite"),
+    avatar: formData.get("avatar"),
+    id_role: 2,
+  };
+
+  if (!checkValidateFormAddDocteur(updatedDoctorData)) {
+    return;
+  }
+
+  try {
+    const updatedDoctor = await updateDocteur(doctorId, updatedDoctorData);
+    return updatedDoctor;
+  } catch (error) {
+    console.error("Erreur :", error);
+  }
 }

@@ -119,3 +119,37 @@ export async function getStatistiquesMensuellesPatients(idDocteur) {
 
   return result;
 }
+
+export async function updateDocteur(id, docteurData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/docteurs/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(docteurData),
+    });
+    if (!response.ok) {
+      throw new Error("Erreur lors de la mise à jour du docteur");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Erreur :", error);
+    throw error;
+  }
+}
+
+export async function deleteDocteur(id) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/docteurs/${String(id)}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Erreur lors de la suppression du docteur");
+    }
+    return true;
+  } catch (error) {
+    console.error("Erreur :", error);
+    throw error;
+  }
+}
