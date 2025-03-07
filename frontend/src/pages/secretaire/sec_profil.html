@@ -39,7 +39,7 @@
               <span>Accueil</span>
             </a>
           </li>
-          <li class="py-2 bg-purple-100">
+          <li class="py-2 ">
             <a
               href="/frontend/src/pages/secretaire/sec_docteur.html"
               class="font-medium gap-3 flex items-center"
@@ -96,85 +96,49 @@
             <p class="text-end" id="profileName"></p>
             <p class="" id="profileEmail"></p>
           </div>
-          <a href="/frontend/src/pages/secretaire/sec_profil.html">
-            <img
+          <img
             id="profilePhoto"
             alt="image"
             class="w-10 h-10 rounded-full object-cover"
           />
-          </a>
         </div>
       </div>
-      <!-- section 1 -->
-      <div
-        class="mt-5 px-3 flex flex-col md:flex-row gap-4 items-center justify-between"
-      >
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Rechercher par docteur..."
-          class="px-3 py-2 bg-gray-50 rounded-3xl focus:outline-none w-full lg:w-96 shadow"
-        />
-      </div>
-      <div class="flex flex-col gap-6 mt-7 px-3">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center gap-3">
+      <div class="lg:px-6 mt-6">
+         <!-- Bannière de profil -->
+         <div class="h-80 relative">
+            <!-- Bannière -->
             <img
-              src="/frontend/public/assets/docteur.png"
-              alt=""
-              class="h-10 md:h-14"
+              src="/frontend/public/assets/banniere.jpg"
+              alt="photo de profil"
+              class="w-full h-full object-cover rounded"
             />
-            <h1 class="font-bold text-lg text-gray-700">Liste des medecins</h1>
+          
+            <!-- Photo de profil centrée -->
+            <div class="absolute inset-x-0 -bottom-20 md:-bottom-28 flex justify-center">
+              <img
+              id="profileBannerPhoto"
+                alt="image"
+                class="w-32 h-32  md:w-64 md:h-64 rounded-full object-cover border-8 border-white"
+              />
+            </div>
           </div>
-          <button
-            id="openAddDocteurModal"
-            class="px-3 py-2 bg-green-500 text-white hover:bg-green-600 font-medium rounded flex items-center gap-2"
-          >
-            <span class="hidden md:flex">Nouvelle docteurs</span>
-            <i class="ri-function-add-line"></i>
-          </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full bg-white rounded-lg overflow-hidden">
-            <thead class="bg-gray-50 text-sm">
-              <tr>
-                <th class="py-2 px-4 text-start">Avatar</th>
-                <th class="py-2 px-4 text-start">Prenom</th>
-                <th class="py-2 px-4 text-start">Nom</th>
-                <th class="py-2 px-4 text-start">Email</th>
-                <th class="py-2 px-4 text-start">Spécialité</th>
-                <th class="py-2 px-4 text-start">Actions</th>
-              </tr>
-            </thead>
-            <tbody
-              id="doctorsTableBody"
-              class="text-gray-700 whitespace-nowrap"
-            >
-              <!-- Les lignes des docteurs seront insérées ici dynamiquement -->
-            </tbody>
-          </table>
-          <div class="flex justify-end items-center gap-3 mt-4">
-            <button
-              id="prevPage"
-              class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              <i class="ri-arrow-left-s-line text-lg"></i>
-            </button>
-            <span id="pageInfo" class="text-gray-700"></span>
-            <button
-              id="nextPage"
-              class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              <i class="ri-arrow-right-s-line text-lg"></i>
-            </button>
+          <div class="flex flex-col justify-center items-center mt-[150px]">
+             <!-- Informations de l'utilisateur -->
+              <h1 id="username" class="font-medium text-2xl md:text-4xl text-center mb-6">seynabou diop</h1>
+              <p  id="email"class="font-medium text-2xl text-gray-400">seynabou221@gmail.com</p>
+              <p  id="live"class="font-medium text-2xl text-gray-400">keur massar</p>
           </div>
-        </div>
+      <div class="mt-16 px-6">
+        <h2 id="profileBannerName" class="text-xl font-semibold"></h2>
+        <p id="profileBannerEmail" class="text-gray-600"></p>
       </div>
-      <div id="modalContainer"></div>
-      <div id="checkModal"></div>
+      </div>
+      
     </div>
+    </div>
+
     <script type="module" src="../../router/router.js"></script>
     <script type="module" src="./js/dashboard.js"></script>
-    <script type="module" src="./js/sec_docteur.js"></script>
+    <script type="module" src="./js/sec_profil.js"></script>
   </body>
 </html>
