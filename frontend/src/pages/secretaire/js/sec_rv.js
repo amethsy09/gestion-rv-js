@@ -2,10 +2,12 @@ import { createModal } from "../../../components/modals/confirmation/modal_conf.
 import {
   closeAddRvModal,
   handleAddRvFormSubmit,
+  handleUpdateAppointment,
   loadDoctorsAndPatients,
   openAddRvModal,
 } from "../../../components/modals/rv/rv_modal.js";
 import { fetchData } from "../../../services/api.js";
+import { deleteAppointment } from "../../../services/appointmentService.js";
 import { paginate } from "../../../utils/pagination.js";
 
 let currentPage = 1;
@@ -125,17 +127,29 @@ async function loadAppointmentsTable(searchQuery = "", status = "Tous") {
               </span>
           </td>
           <td class="py-2 px-4">
-             <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
+             <button data-id="${appointment.id}" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 edit-button">
               <span>Modifier</span>
               <i class="ri-edit-box-line"></i>
               </button>
-              <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
+              <button data-id="${appointment.id}" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 delete-button">
               <span>Supprimer</span>
               <i class="ri-delete-bin-6-line"></i>
               </button>
           </td>
         `;
         tableBody.appendChild(row);
+      });
+      document.querySelectorAll(".edit-button").forEach((button) => {
+        button.addEventListener("click", async (e) => {
+          const rvId = e.target.closest("button").dataset.id;
+          await handleEditAppointment(rvId);
+        });
+      });
+      document.querySelectorAll(".delete-button").forEach((button) => {
+        button.addEventListener("click", async (e) => {
+          const rvId = e.target.closest("button").dataset.id;
+          await handleDeleteAppointment(rvId);
+        });
       });
     }
     updatePaginationControls(currentPage, totalPages);
@@ -162,20 +176,30 @@ async function loadModal() {
     openModalButton.addEventListener("click", openAddRvModal);
     cancelAddPatientButton.addEventListener("click", closeAddRvModal);
     const form = document.getElementById("addRvForm");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const checkModal = document.getElementById("checkModal");
-      const newRv = await handleAddRvFormSubmit(checkModal);
-      if (newRv) {
-        const modal = createModal(
-          "verifier.png",
-          `Nouvelle rv ajouter avec success `,
-          "blue"
-        );
-        checkModal.appendChild(modal);
-      }
-    });
+    form.setAttribute("data-action","add");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const action = form.getAttribute("data-action");
+        if (action === "add") {
+          const checkModal = document.getElementById("checkModal");
+          const newRv = await handleAddRvFormSubmit(checkModal);
+          if (newRv) {
+            const modal = createModal(
+              "verifier.png",
+              `Nouvelle rv ajouter avec success `,
+              "blue"
+            );
+            checkModal.appendChild(modal);
+          }
+        } else if (action === "edit") {
+          const rvId = form.getAttribute("data-appointment-id");
+          const updatedDoctor = await handleUpdateAppointment(rvId);
+          if (updatedDoctor) {
+            closeAddRvModal();
+            loadAppointmentsTable();
+          }
+        }
+      });
   } catch (error) {
     console.error("Erreur :", error);
   }
@@ -260,4 +284,58 @@ function setupSortButtons() {
       document.getElementById("statusFilter").value
     );
   });
+}
+async function handleEditAppointment(appointmentId) {
+  const appointment = mappedAppointments.find((a) => a.id == appointmentId);
+  if (!appointment) return;
+
+  document.getElementById("appointmentDate").value = appointment.date;
+  document.getElementById("appointmentTime").value = appointment.heure;
+  document.getElementById("appointmentDoctor").value = appointment.id_docteur;
+  document.getElementById("appointmentPatient").value = appointment.id_patient;
+
+  openAddRvModal();
+
+  const submitButton = document.querySelector("#addRvForm button[type='submit']");
+  submitButton.textContent = "Modifier";
+  submitButton.innerHTML = `Modifier <i class="ri-edit-box-line"></i>`;
+
+  const form = document.getElementById("addRvForm");
+  form.setAttribute("data-action", "edit");
+  form.setAttribute("data-appointment-id", appointmentId);
+}
+export async function handleDeleteAppointment(appointmentId) {
+  // Demander une confirmation à l'utilisateur
+  const confirmDelete = confirm("Êtes-vous sûr de vouloir supprimer ce rendez-vous ?");
+  if (!confirmDelete) return;
+
+  try {
+    // Appeler la fonction de suppression du service
+    const success = await deleteAppointment(appointmentId);
+
+    if (success) {
+      // Afficher un message de succès
+      const checkModal = document.getElementById("checkModal");
+      const modal = createModal(
+        "verifier.png",
+        "Le rendez-vous a été supprimé avec succès.",
+        "blue"
+      );
+      checkModal.appendChild(modal);
+
+      // Recharger la table des rendez-vous
+      await loadAppointmentsTable();
+    }
+  } catch (error) {
+    console.error("Erreur lors de la suppression du rendez-vous :", error);
+
+    // Afficher un message d'erreur
+    const checkModal = document.getElementById("checkModal");
+    const modal = createModal(
+      "erreur.png",
+      "Une erreur s'est produite lors de la suppression du rendez-vous.",
+      "red"
+    );
+    checkModal.appendChild(modal);
+  }
 }

@@ -98,13 +98,12 @@
   "rendez-vous": [
     {
       "id": "1",
-      "date": "2025-01-01",
-      "heure": "10:00",
+      "date": "2025-03-16",
+      "heure": "12:00",
       "id_docteur": 1,
       "id_patient": 1,
       "id_secretaire": 1,
-      "status": "Accepté",
-      "specialite": "dentiste"
+      "status": "En attente"
     },
     {
       "id": "3",
@@ -126,9 +125,9 @@
       "status": "En attente"
     },
     {
-      "id": "5",
-      "date": "2025-03-05",
-      "heure": "10:00",
+      "id": 5,
+      "date": "2025-03-08",
+      "heure": "08:00",
       "id_docteur": 1,
       "id_patient": 2,
       "id_secretaire": 1,
