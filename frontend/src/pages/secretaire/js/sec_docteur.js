@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   sidebarDeviceButton.addEventListener("click", openSidebar);
   sidebarClose.addEventListener("click", closeSidebar);
   const form = document.getElementById("addDocteurForm");
+  form.setAttribute("data-action", "add");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const action = form.getAttribute("data-action");
