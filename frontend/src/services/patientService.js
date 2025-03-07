@@ -85,3 +85,27 @@ export async function getRendezVousByMonth(patientId) {
 
   return { labels, acceptedData, rejectedData, pendingData };
 }
+
+export async function updatePatient(patientId, patientData) {
+  const response = await fetch(`${API_BASE_URL}/patients/${patientId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(patientData),
+  });
+  if (!response.ok) {
+    throw new Error("Erreur lors de la mise à jour du patient");
+  }
+  return response.json();
+}
+
+export async function deletePatient(patientId) {
+  const response = await fetch(`${API_BASE_URL}/patients/${patientId}`, {
+    method: "DELETE",
+  });
+  if (!response.ok) {
+    throw new Error("Erreur lors de la suppression du patient");
+  }
+  return response.ok;
+}

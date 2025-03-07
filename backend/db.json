@@ -51,12 +51,12 @@
       "id": "1",
       "nom": "Lo",
       "prenom": "Léa",
-      "telephone": "77 678 90 76",
-      "email": "lea@gmail.com",
+      "telephone": "77678907",
+      "email": "lea56@gmail.com",
       "password": "ridendo",
       "adresse": "yeumbeul",
       "avatar": "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=600",
-      "id_role": 3
+      "id_role": 2
     },
     {
       "id": "2",
@@ -67,17 +67,6 @@
       "password": "liverpool",
       "adresse": "Yeumbeul ",
       "avatar": "https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600",
-      "id_role": 3
-    },
-    {
-      "id": "3",
-      "nom": "Ndiaye",
-      "prenom": "Souleymane",
-      "telephone": "765467890",
-      "email": "anz22@gmail.com",
-      "password": "liverpool",
-      "adresse": "Parcelle",
-      "avatar": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=600",
       "id_role": 3
     }
   ],
