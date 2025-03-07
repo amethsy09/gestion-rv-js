@@ -2,9 +2,13 @@ import { createModal } from "../../../components/modals/confirmation/modal_conf.
 import {
   closeAddPatientModal,
   handleAddPatientFormSubmit,
+  handleUpdatePatient,
   openAddPatientModal,
 } from "../../../components/modals/patients/patient_modal.js";
-import { getPatients } from "../../../services/patientService.js";
+import {
+  deletePatient,
+  getPatients,
+} from "../../../services/patientService.js";
 import { paginate } from "../../../utils/pagination.js";
 
 let currentPage = 1;
@@ -56,17 +60,30 @@ async function loadPatientsTable(searchQuery = "") {
                 <td class="py-2 px-4">${patient.telephone}</td>
                 <td class="py-2 px-4">${patient.adresse}</td>
                 <td class="py-2 px-4">
-                    <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
-                    <span>Modifier</span>
-                    <i class="ri-edit-box-line"></i>
-                    </button>
-                    <button class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 cursor-not-allowed" disabled>
-                    <span>Supprimer</span>
-                    <i class="ri-delete-bin-6-line"></i>
-                    </button>
-                </td>
+            <button data-id="${patient.id}" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 edit-button">
+              <span>Modifier</span>
+              <i class="ri-edit-box-line"></i>
+            </button>
+            <button data-id="${patient.id}" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 delete-button">
+              <span>Supprimer</span>
+              <i class="ri-delete-bin-6-line"></i>
+            </button>
+          </td>
             `;
         tableBody.appendChild(row);
+      });
+      document.querySelectorAll(".edit-button").forEach((button) => {
+        button.addEventListener("click", async (e) => {
+          const patientId = e.target.closest("button").dataset.id;
+          await handleEditPatient(patientId);
+        });
+      });
+
+      document.querySelectorAll(".delete-button").forEach((button) => {
+        button.addEventListener("click", async (e) => {
+          const patientId = e.target.closest("button").dataset.id;
+          await handleDeletePatient(patientId);
+        });
       });
       updatePaginationControls(currentPage, totalPages);
     }
@@ -93,18 +110,28 @@ async function loadModal() {
     openModalButton.addEventListener("click", openAddPatientModal);
     cancelAddPatientButton.addEventListener("click", closeAddPatientModal);
     const form = document.getElementById("addPatientForm");
-
+    form.setAttribute("data-action", "add");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const newPatient = await handleAddPatientFormSubmit();
-      const checkModal = document.getElementById("checkModal");
-      if (newPatient) {
-        const modal = createModal(
-          "verifier.png",
-          `Dr ${newPatient.prenom} ${newPatient.nom} ajouter avec success`,
-          "blue"
-        );
-        checkModal.appendChild(modal);
+      const action = form.getAttribute("data-action");
+      if (action === "add") {
+        const newPatient = await handleAddPatientFormSubmit();
+        const checkModal = document.getElementById("checkModal");
+        if (newPatient) {
+          const modal = createModal(
+            "verifier.png",
+            `Dr ${newPatient.prenom} ${newPatient.nom} ajouter avec success`,
+            "blue"
+          );
+          checkModal.appendChild(modal);
+        }
+      } else if (action === "edit") {
+        const patientId = form.getAttribute("data-patient-id");
+        const updatedDoctor = await handleUpdatePatient(patientId);
+        if (updatedDoctor) {
+          closeAddDocteurModal();
+          loadDoctorsTable();
+        }
       }
     });
   } catch (error) {
@@ -171,4 +198,49 @@ function setupSearchInput() {
     currentPage = 1;
     loadPatientsTable(searchQuery);
   });
+}
+
+async function handleEditPatient(patientId) {
+  const patient = patients.find((p) => p.id == patientId);
+  if (!patient) return;
+
+  // Remplir le formulaire avec les données du patient
+  document.getElementById("patientNom").value = patient.nom;
+  document.getElementById("patientPrenom").value = patient.prenom;
+  document.getElementById("patientEmail").value = patient.email;
+  document.getElementById("patientTelephone").value = patient.telephone;
+  document.getElementById("patientAdresse").value = patient.adresse;
+  document.getElementById("patientAvatar").value = patient.avatar;
+  document.getElementById("patientPassword").value = patient.password;
+
+  // Ouvrir la modale
+  openAddPatientModal();
+
+  // Changer le texte du bouton de soumission
+  const submitButton = document.querySelector(
+    "#addPatientForm button[type='submit']"
+  );
+  submitButton.textContent = "Modifier";
+  submitButton.innerHTML = `Modifier <i class="ri-edit-box-line"></i>`;
+
+  // Ajouter des attributs pour identifier l'action et l'ID du patient
+  const form = document.getElementById("addPatientForm");
+  form.setAttribute("data-action", "edit");
+  form.setAttribute("data-patient-id", patientId);
+}
+
+async function handleDeletePatient(patientId) {
+  const confirmDelete = confirm(
+    "Êtes-vous sûr de vouloir supprimer ce patient ?"
+  );
+  if (!confirmDelete) return;
+
+  try {
+    const success = await deletePatient(patientId);
+    if (success) {
+      loadPatientsTable();
+    }
+  } catch (error) {
+    console.error("Erreur :", error);
+  }
 }
