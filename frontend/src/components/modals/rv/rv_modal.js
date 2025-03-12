@@ -1,6 +1,10 @@
 import { fetchData } from "../../../services/api.js";
-import { addAppointment, updateAppointment } from "../../../services/appointmentService.js";
+import {
+  addAppointment,
+  updateAppointment,
+} from "../../../services/appointmentService.js";
 import { getDoctors } from "../../../services/doctorService.js";
+import { sendNotification } from "../../../services/notificationService.js";
 import { getPatients } from "../../../services/patientService.js";
 import { createModal } from "../confirmation/modal_conf.js";
 
@@ -104,7 +108,17 @@ export async function handleAddRvFormSubmit() {
   }
   try {
     const newRv = await addAppointment(rvData);
-    console.log(newRv);
+    const Message = `Vous avez un nouveau rendez-vous le ${newRv.date} à ${newRv.heure}.`;
+    const newNotif = {
+      id: await generateIdNotif(),
+      message: Message,
+      id_docteur: newRv.id_docteur,
+      id_patient: newRv.id_patient,
+      isReadPatient: false,
+      isReadDocteur: false,
+      createdAt: new Date().toISOString(),
+    };
+    await sendNotification(newNotif);
     closeAddRvModal();
     form.reset();
     return newRv;
@@ -118,7 +132,11 @@ async function generateId() {
   const id = rv.length > 0 ? parseInt(rv[rv.length - 1].id) + 1 : 1;
   return id;
 }
-
+async function generateIdNotif() {
+  const notifs = await fetchData("notifications");
+  const id = notifs.length > 0 ? parseInt(notifs[notifs.length - 1].id) + 1 : 1;
+  return id;
+}
 export async function loadDoctorsAndPatients() {
   try {
     const doctors = await getDoctors();
@@ -168,7 +186,10 @@ export async function handleUpdateAppointment(appointmentId) {
   }
 
   try {
-    const updatedAppointment = await updateAppointment(appointmentId, updatedAppointmentData);
+    const updatedAppointment = await updateAppointment(
+      appointmentId,
+      updatedAppointmentData
+    );
     closeAddRvModal();
     loadAppointmentsTable();
     return updatedAppointment;

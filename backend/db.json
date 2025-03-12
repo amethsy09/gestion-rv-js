@@ -114,13 +114,51 @@
       "status": "En attente"
     },
     {
-      "id": 5,
-      "date": "2025-03-08",
-      "heure": "08:00",
-      "id_docteur": 1,
+      "id": "5",
+      "date": "2025-03-13",
+      "heure": "00:11",
+      "id_docteur": 2,
       "id_patient": 2,
       "id_secretaire": 1,
       "status": "En attente"
+    },
+    {
+      "id": "6",
+      "date": "2025-03-13",
+      "heure": "13:41",
+      "id_docteur": 2,
+      "id_patient": 1,
+      "id_secretaire": 1,
+      "status": "En attente"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "1",
+      "message": "Vous avez une nouvelle rendez-vous le 2025-03-16 à 12:00",
+      "id_docteur": 1,
+      "id_patient": 1,
+      "isReadPatient": false,
+      "isReadDocteur": false,
+      "createdAt": "2025-03-25T10:00:00Z"
+    },
+    {
+      "id": "2",
+      "message": "Vous avez une nouvelle rendez-vous le 2025-03-13 à 00:11.",
+      "id_docteur": 2,
+      "id_patient": 2,
+      "isReadPatient": false,
+      "isReadDocteur": false,
+      "createdAt": "2025-03-25T10:00:00Z"
+    },
+    {
+      "id": "3",
+      "message": "Vous avez un nouveau rendez-vous le 2025-03-13 à 13:41.",
+      "id_docteur": 2,
+      "id_patient": 1,
+      "isReadPatient": false,
+      "isReadDocteur": false,
+      "createdAt": "2025-03-25T10:00:00Z"
     }
   ]
 }

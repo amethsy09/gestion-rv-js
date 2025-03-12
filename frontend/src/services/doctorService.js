@@ -1,4 +1,5 @@
 import { fetchData } from "./api.js";
+import { getNotifications } from "./notificationService.js";
 const API_BASE_URL = "http://localhost:3000";
 
 export async function getDoctors() {
@@ -150,6 +151,19 @@ export async function deleteDocteur(id) {
     return true;
   } catch (error) {
     console.error("Erreur :", error);
+    throw error;
+  }
+}
+
+export async function getDocteurNotifications(docteurId) {
+  try {
+    const notifications = await getNotifications();
+    const docteurNotifications = notifications.filter(
+      (notification) => notification.id_docteur == docteurId
+    );
+    return docteurNotifications;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des notifications :", error);
     throw error;
   }
 }
