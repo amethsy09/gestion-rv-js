@@ -1,114 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.min.css"
+      rel="stylesheet"
+    />
+    <title>Secretaires || Docteurs</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.min.css" rel="stylesheet" />
-  <title>Secretaires || Docteurs</title>
-</head>
-
-<body class="flex h-screen">
-  <!-- sidebar -->
-  <div id="sidebar"
-    class="flex flex-col justify-between p-3 fixed left-0 bg-gray-50 shadow-md h-full w-64 lg:w-52 lg:flex transform transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 z-50">
-    <div class="flex justify-between">
-      <div class="flex items-center text-white gap-1">
-        <div class="p-2 bg-purple-500 rounded text-white self-center">GR</div>
-        <div class="flex flex-col text-gray-800 font-medium">
-          <span>Gestion</span>
-          <span>Rendez-vous</span>
-        </div>
-      </div>
-      <div class="lg:hidden" id="sidebar-close">
-        <i class="ri-layout-right-line text-lg font-semibold"></i>
-      </div>
-    </div>
-    <nav>
-      <ul>
-        <li class="py-2 hover:bg-purple-100">
-          <a href="/frontend/src/pages/secretaire/dashboard.html" class="font-medium gap-3 flex items-center">
-            <i class="ri-home-3-line text-lg"></i>
-            <span>Accueil</span>
-          </a>
-        </li>
-        <li class="py-2 ">
-          <a href="/frontend/src/pages/secretaire/sec_docteur.html" class="font-medium gap-3 flex items-center">
-            <i class="ri-nurse-line text-lg"></i>
-            <span>Medecins</span>
-          </a>
-        </li>
-        <li class="py-2 hover:bg-purple-100">
-          <a href="/frontend/src/pages/secretaire/sec_patient.html" class="font-medium gap-3 flex items-center">
-            <i class="ri-user-line text-lg"></i>
-            <span>Patients</span>
-          </a>
-        </li>
-        <li class="py-2 hover:bg-purple-100">
-          <a href="/frontend/src/pages/secretaire/sec_rv.html" class="font-medium gap-3 flex items-center">
-            <i class="ri-timer-flash-line text-lg"></i>
+  <body class="flex h-screen">
+    <!-- sidebar -->
+    <div
+      id="sidebar"
+      class="flex flex-col justify-between p-3 fixed left-0 bg-gray-50 shadow-md h-full w-64 lg:w-52 lg:flex transform transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 z-50"
+    >
+      <div class="flex justify-between">
+        <div class="flex items-center text-white gap-1">
+          <div class="p-2 bg-purple-500 rounded text-white self-center">GR</div>
+          <div class="flex flex-col text-gray-800 font-medium">
+            <span>Gestion</span>
             <span>Rendez-vous</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <button class="px-2 py-3 bg-gray-100 hover:bg-gray-200 font-medium" id="logoutBtn">
-      <span>Deconnexion</span>
-      <i class="ri-logout-box-line"></i>
-    </button>
-  </div>
-  <!-- contenue -->
-  <div class="w-full lg:ml-52">
-    <!-- header -->
-    <div class="flex items-center justify-between py-2 px-3 shadow-md">
-      <div>
-        <h1 id="profileTitle" class="text-lg font-medium hidden lg:block">
-          Espace secretaires
-        </h1>
-        <div class="h-10 w-10 rounded-full bg-gray-50 flex justify-center items-center lg:hidden" id="sidebar-device">
-          <i class="ri-menu-2-fill font-medium"></i>
+          </div>
+        </div>
+        <div class="lg:hidden" id="sidebar-close">
+          <i class="ri-layout-right-line text-lg font-semibold"></i>
         </div>
       </div>
-      <div class="flex items-center gap-2">
-        <div class="hidden lg:flex flex-col mr-4 text-sm font-medium">
-          <p class="text-end" id="profileName"></p>
-          <p class="" id="profileEmail"></p>
+      <nav>
+        <ul>
+          <li class="py-2 hover:bg-purple-100">
+            <a
+              href="/frontend/src/pages/secretaire/dashboard.html"
+              class="font-medium gap-3 flex items-center"
+            >
+              <i class="ri-home-3-line text-lg"></i>
+              <span>Accueil</span>
+            </a>
+          </li>
+          <li class="py-2">
+            <a
+              href="/frontend/src/pages/secretaire/sec_docteur.html"
+              class="font-medium gap-3 flex items-center"
+            >
+              <i class="ri-nurse-line text-lg"></i>
+              <span>Medecins</span>
+            </a>
+          </li>
+          <li class="py-2 hover:bg-purple-100">
+            <a
+              href="/frontend/src/pages/secretaire/sec_patient.html"
+              class="font-medium gap-3 flex items-center"
+            >
+              <i class="ri-user-line text-lg"></i>
+              <span>Patients</span>
+            </a>
+          </li>
+          <li class="py-2 hover:bg-purple-100">
+            <a
+              href="/frontend/src/pages/secretaire/sec_rv.html"
+              class="font-medium gap-3 flex items-center"
+            >
+              <i class="ri-timer-flash-line text-lg"></i>
+              <span>Rendez-vous</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <button
+        class="px-2 py-3 bg-gray-100 hover:bg-gray-200 font-medium"
+        id="logoutBtn"
+      >
+        <span>Deconnexion</span>
+        <i class="ri-logout-box-line"></i>
+      </button>
+    </div>
+    <!-- contenue -->
+    <div class="w-full lg:ml-52">
+      <!-- header -->
+      <div class="flex items-center justify-between py-2 px-3 shadow-md">
+        <div>
+          <h1 id="profileTitle" class="text-lg font-medium hidden lg:block">
+            Espace secretaires
+          </h1>
+          <div
+            class="h-10 w-10 rounded-full bg-gray-50 flex justify-center items-center lg:hidden"
+            id="sidebar-device"
+          >
+            <i class="ri-menu-2-fill font-medium"></i>
+          </div>
         </div>
-        <img id="profilePhoto" alt="image" class="w-10 h-10 rounded-full object-cover" />
+        <div class="flex items-center gap-2">
+          <div class="hidden lg:flex flex-col text-sm font-medium">
+            <p class="text-end" id="profileName"></p>
+            <p class="" id="profileEmail"></p>
+          </div>
+          <img
+            id="profilePhoto"
+            alt="image"
+            class="w-10 h-10 rounded-full object-cover"
+          />
+        </div>
+      </div>
+      <div class="lg:px-6 mt-6">
+        <!-- Bannière de profil -->
+        <div class="h-80 relative">
+          <!-- Bannière -->
+          <img
+            src="/frontend/public/assets/banniere.jpg"
+            alt="photo de profil"
+            class="w-full h-full object-cover rounded"
+          />
+
+          <!-- Photo de profil centrée -->
+          <div
+            class="absolute inset-x-0 -bottom-20 md:-bottom-28 flex justify-center"
+          >
+            <img
+              id="profileBannerPhoto"
+              alt="image"
+              class="w-32 h-32 md:w-64 md:h-64 rounded-full object-cover border-8 border-white"
+            />
+          </div>
+        </div>
+        <div class="flex flex-col justify-center items-center mt-[150px]">
+          <!-- Informations de l'utilisateur -->
+          <h1
+            id="username"
+            class="font-medium text-xl md:text-xl text-center mb-6"
+          >
+            seynabou diop
+          </h1>
+          <p id="email" class="font-medium text-xl text-gray-500">
+            seynabou221@gmail.com
+          </p>
+          <p id="live" class="font-medium text-xl text-gray-500">keur massar</p>
+        </div>
+        <div class="mt-16 px-6">
+          <h2 id="profileBannerName" class="text-xl font-semibold"></h2>
+          <p id="profileBannerEmail" class="text-gray-600"></p>
+        </div>
       </div>
     </div>
-    <div class="lg:px-6 mt-6">
-      <!-- Bannière de profil -->
-      <div class="h-80 relative">
-        <!-- Bannière -->
-        <img src="/frontend/public/assets/banniere.jpg" alt="photo de profil"
-          class="w-full h-full object-cover rounded" />
 
-        <!-- Photo de profil centrée -->
-        <div class="absolute inset-x-0 -bottom-20 md:-bottom-28 flex justify-center">
-          <img id="profileBannerPhoto" alt="image"
-            class="w-32 h-32  md:w-64 md:h-64 rounded-full object-cover border-8 border-white" />
-        </div>
-      </div>
-      <div class="flex flex-col justify-center items-center mt-[150px]">
-        <!-- Informations de l'utilisateur -->
-        <h1 id="username" class="font-medium text-2xl md:text-4xl text-center mb-6">seynabou diop</h1>
-        <p id="email" class="font-medium text-2xl text-gray-400">seynabou221@gmail.com</p>
-        <p id="live" class="font-medium text-2xl text-gray-400">keur massar</p>
-      </div>
-      <div class="mt-16 px-6">
-        <h2 id="profileBannerName" class="text-xl font-semibold"></h2>
-        <p id="profileBannerEmail" class="text-gray-600"></p>
-      </div>
-    </div>
-
-  </div>
-  </div>
-
-  <script type="module" src="../../router/router.js"></script>
-  <script type="module" src="./js/dashboard.js"></script>
-  <script type="module" src="./js/sec_profil.js"></script>
-</body>
-
+    <script type="module" src="../../router/router.js"></script>
+    <script type="module" src="./js/dashboard.js"></script>
+    <script type="module" src="./js/sec_profil.js"></script>
+  </body>
 </html>
