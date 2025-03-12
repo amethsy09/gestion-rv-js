@@ -127,11 +127,15 @@ async function loadAppointmentsTable(searchQuery = "", status = "Tous") {
               </span>
           </td>
           <td class="py-2 px-4">
-             <button data-id="${appointment.id}" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 edit-button">
+             <button data-id="${
+               appointment.id
+             }" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 edit-button">
               <span>Modifier</span>
               <i class="ri-edit-box-line"></i>
               </button>
-              <button data-id="${appointment.id}" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 delete-button">
+              <button data-id="${
+                appointment.id
+              }" class="bg-gray-100 py-1 px-3 rounded-md hover:bg-gray-200 delete-button">
               <span>Supprimer</span>
               <i class="ri-delete-bin-6-line"></i>
               </button>
@@ -176,30 +180,30 @@ async function loadModal() {
     openModalButton.addEventListener("click", openAddRvModal);
     cancelAddPatientButton.addEventListener("click", closeAddRvModal);
     const form = document.getElementById("addRvForm");
-    form.setAttribute("data-action","add");
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const action = form.getAttribute("data-action");
-        if (action === "add") {
-          const checkModal = document.getElementById("checkModal");
-          const newRv = await handleAddRvFormSubmit(checkModal);
-          if (newRv) {
-            const modal = createModal(
-              "verifier.png",
-              `Nouvelle rv ajouter avec success `,
-              "blue"
-            );
-            checkModal.appendChild(modal);
-          }
-        } else if (action === "edit") {
-          const rvId = form.getAttribute("data-appointment-id");
-          const updatedDoctor = await handleUpdateAppointment(rvId);
-          if (updatedDoctor) {
-            closeAddRvModal();
-            loadAppointmentsTable();
-          }
+    form.setAttribute("data-action", "add");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const action = form.getAttribute("data-action");
+      if (action === "add") {
+        const checkModal = document.getElementById("checkModal");
+        const newRv = await handleAddRvFormSubmit(checkModal);
+        if (newRv) {
+          const modal = createModal(
+            "verifier.png",
+            `Nouvelle rv ajouter avec success `,
+            "blue"
+          );
+          checkModal.appendChild(modal);
         }
-      });
+      } else if (action === "edit") {
+        const rvId = form.getAttribute("data-appointment-id");
+        const updatedDoctor = await handleUpdateAppointment(rvId);
+        if (updatedDoctor) {
+          closeAddRvModal();
+          loadAppointmentsTable();
+        }
+      }
+    });
   } catch (error) {
     console.error("Erreur :", error);
   }
@@ -209,12 +213,10 @@ function openSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.remove("-translate-x-full");
 }
-
 function closeSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.add("-translate-x-full");
 }
-
 function setupPaginationControls() {
   const prevButton = document.getElementById("prevPage");
   const nextButton = document.getElementById("nextPage");
@@ -240,7 +242,6 @@ function setupPaginationControls() {
     }
   });
 }
-
 function updatePaginationControls(currentPage, totalPages) {
   const prevButton = document.getElementById("prevPage");
   const nextButton = document.getElementById("nextPage");
@@ -250,12 +251,10 @@ function updatePaginationControls(currentPage, totalPages) {
   nextButton.disabled = currentPage === totalPages;
   pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
 }
-
 function filterByStatus(appointments, status) {
   if (status === "Tous") return appointments;
   return appointments.filter((appointment) => appointment.status === status);
 }
-
 function setupStatusFilter() {
   const statusFilter = document.getElementById("statusFilter");
 
@@ -265,7 +264,6 @@ function setupStatusFilter() {
     loadAppointmentsTable(document.getElementById("searchInput").value, status);
   });
 }
-
 function sortAppointmentsByDate(appointments, ascending = true) {
   return appointments.sort((a, b) => {
     const dateA = new Date(a.date);
@@ -273,7 +271,6 @@ function sortAppointmentsByDate(appointments, ascending = true) {
     return ascending ? dateA - dateB : dateB - dateA;
   });
 }
-
 function setupSortButtons() {
   const sortDateButton = document.getElementById("sortDate");
 
@@ -296,7 +293,9 @@ async function handleEditAppointment(appointmentId) {
 
   openAddRvModal();
 
-  const submitButton = document.querySelector("#addRvForm button[type='submit']");
+  const submitButton = document.querySelector(
+    "#addRvForm button[type='submit']"
+  );
   submitButton.textContent = "Modifier";
   submitButton.innerHTML = `Modifier <i class="ri-edit-box-line"></i>`;
 
@@ -306,7 +305,9 @@ async function handleEditAppointment(appointmentId) {
 }
 export async function handleDeleteAppointment(appointmentId) {
   // Demander une confirmation à l'utilisateur
-  const confirmDelete = confirm("Êtes-vous sûr de vouloir supprimer ce rendez-vous ?");
+  const confirmDelete = confirm(
+    "Êtes-vous sûr de vouloir supprimer ce rendez-vous ?"
+  );
   if (!confirmDelete) return;
 
   try {

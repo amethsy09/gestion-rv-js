@@ -1,4 +1,5 @@
 import { fetchData } from "./api.js";
+import { getNotifications } from "./notificationService.js";
 const API_BASE_URL = "http://localhost:3000";
 
 export async function getPatients() {
@@ -108,4 +109,16 @@ export async function deletePatient(patientId) {
     throw new Error("Erreur lors de la suppression du patient");
   }
   return response.ok;
+}
+export async function getPatientNotifications(patientId) {
+  try {
+    const notifications = await getNotifications();
+    const patientNotifications = notifications.filter(
+      (notification) => notification.id_patient == patientId
+    );
+    return patientNotifications;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des notifications :", error);
+    throw error;
+  }
 }

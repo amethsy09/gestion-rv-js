@@ -25,7 +25,6 @@ export async function addAppointment(appointmentData) {
     throw error;
   }
 }
-
 export async function updateRendezVousStatus(id, status) {
   try {
     const response = await fetch(`${API_BASE_URL}/rendez-vous/${id}`, {
@@ -43,13 +42,16 @@ export async function updateRendezVousStatus(id, status) {
 }
 export async function updateAppointment(appointmentId, updatedData) {
   try {
-    const response = await fetch(`${API_BASE_URL}/rendez-vous/${appointmentId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/rendez-vous/${appointmentId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Erreur lors de la mise à jour du rendez-vous");
@@ -64,9 +66,12 @@ export async function updateAppointment(appointmentId, updatedData) {
 }
 export async function deleteAppointment(appointmentId) {
   try {
-    const response = await fetch(`${API_BASE_URL}/rendez-vous/${appointmentId}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/rendez-vous/${appointmentId}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Erreur lors de la suppression du rendez-vous");
