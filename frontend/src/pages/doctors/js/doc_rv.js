@@ -1,6 +1,9 @@
 import { showNotification } from "../../../components/notifications/notification.js";
 import { updateRendezVousStatus } from "../../../services/appointmentService.js";
-import { getRendezVousAndPatientInfoByDocteur } from "../../../services/doctorService.js";
+import {
+  getDocteurNotifications,
+  getRendezVousAndPatientInfoByDocteur,
+} from "../../../services/doctorService.js";
 import { getCurrentUser } from "../../../store/auth.js";
 import { paginate } from "../../../utils/pagination.js";
 
@@ -12,11 +15,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = getCurrentUser();
   displayDocteurInfo();
   const rendezVous = await getRendezVousAndPatientInfoByDocteur(user.id);
-  mappedAppointments = rendezVous; // Stocker les rendez-vous dans une variable globale
+  mappedAppointments = rendezVous;
   setupPaginationControls();
   setupSearchInput();
   setupStatusFilter();
   loadPaginatedData(mappedAppointments);
+  handleNotificaionCount(user.id);
   document
     .getElementById("rendezVousTableBody")
     .addEventListener("click", handleOptionClick);
@@ -42,6 +46,15 @@ function displayDocteurInfo() {
 function openSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.remove("-translate-x-full");
+}
+
+async function handleNotificaionCount(id) {
+  let notifications = await getDocteurNotifications(id);
+  notifications = notifications.filter(
+    (notification) => notification.isReadDocteur == false
+  );
+  const showNotif = document.getElementById("notifLength");
+  showNotif.textContent = notifications.length || 0;
 }
 
 function closeSidebar() {

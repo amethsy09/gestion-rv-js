@@ -1,4 +1,5 @@
 import {
+  getDocteurNotifications,
   getPatientsByDocteur,
   getRendezVousByDocteur,
   getStatistiquesMensuellesPatients,
@@ -10,16 +11,18 @@ import { handleNotifications } from "../../../store/notification.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   handleNotifications();
-  await displayCardInfo();
+  const user = getCurrentUser();
+  await displayCardInfo(user);
   displayDocteurInfo();
+  await handleNotificaionCount(user.id);
+
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
   sidebarClose.addEventListener("click", closeSidebar);
 });
 
-async function displayCardInfo() {
-  const user = getCurrentUser();
+async function displayCardInfo(user) {
   const rendezVous = await getRendezVousByDocteur(user.id);
   const patients = await getPatientsByDocteur(user.id);
   const statistiquesRendezVous = await getStatistiquesRendezVousParStatut(
@@ -148,4 +151,13 @@ function openSidebar() {
 function closeSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.add("-translate-x-full");
+}
+
+async function handleNotificaionCount(id) {
+  let notifications = await getDocteurNotifications(id);
+  notifications = notifications.filter(
+    (notification) => notification.isReadDocteur == false
+  );
+  const showNotif = document.getElementById("notifLength");
+  showNotif.textContent = notifications.length || 0;
 }
