@@ -131,7 +131,7 @@ export async function handleUpdatePatient(patientId) {
     password: formData.get("password"),
     adresse: formData.get("adresse"),
     avatar: formData.get("avatar"),
-    id_role: 2,
+    id_role: 3,
   };
 
   if (!checkValidateFormAddPatient(updatedPatientData)) {

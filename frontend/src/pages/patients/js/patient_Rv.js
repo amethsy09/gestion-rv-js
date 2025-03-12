@@ -1,4 +1,7 @@
-import { getRendezVousAndDocteurInfoByDocteur } from "../../../services/patientService.js";
+import {
+  getPatientNotifications,
+  getRendezVousAndDocteurInfoByDocteur,
+} from "../../../services/patientService.js";
 import { getCurrentUser } from "../../../store/auth.js";
 import { paginate } from "../../../utils/pagination.js";
 
@@ -9,6 +12,7 @@ let mappedAppointments = [];
 document.addEventListener("DOMContentLoaded", async () => {
   const user = getCurrentUser();
   const rendezVous = await getRendezVousAndDocteurInfoByDocteur(user.id);
+  await handleNotificaionCount(user.id);
   mappedAppointments = rendezVous; // Stocker les rendez-vous dans une variable globale
   setupPaginationControls();
   setupSearchInput();
@@ -178,4 +182,10 @@ function filterAndSortAppointments(status = null, searchQuery = null) {
   }
 
   return filteredAppointments;
+}
+
+async function handleNotificaionCount(id) {
+  const notifications = await getPatientNotifications(id);
+  const showNotif = document.getElementById("notifLength");
+  showNotif.textContent = notifications.length;
 }

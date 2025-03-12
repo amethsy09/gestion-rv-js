@@ -1,4 +1,5 @@
 import {
+  getPatientNotifications,
   getRendezVousByMonth,
   getRendezVousStatsByPatientId,
 } from "../../../services/patientService.js";
@@ -9,10 +10,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   handleNotifications();
   const user = getCurrentUser();
   displayInfoPatient(user);
+  await handleNotificaionCount(user.id);
   await displayCardInfo();
   const { labels, acceptedData, rejectedData, pendingData } =
     await getRendezVousByMonth(user.id);
   initChart(labels, acceptedData, rejectedData, pendingData);
+  const sidebarDeviceButton = document.getElementById("sidebar-device");
+  const sidebarClose = document.getElementById("sidebar-close");
+  sidebarDeviceButton.addEventListener("click", openSidebar);
+  sidebarClose.addEventListener("click", closeSidebar);
 });
 function displayInfoPatient(user) {
   const profilPatient = document.getElementById("profilPatient");
@@ -95,4 +101,20 @@ export function initChart(labels, acceptedData, rejectedData, pendingData) {
       },
     },
   });
+}
+
+async function handleNotificaionCount(id) {
+  const notifications = await getPatientNotifications(id);
+  const showNotif = document.getElementById("notifLength");
+  showNotif.textContent = notifications.length;
+}
+
+function openSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  sidebar.classList.remove("-translate-x-full");
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  sidebar.classList.add("-translate-x-full");
 }

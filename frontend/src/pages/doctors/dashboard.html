@@ -56,11 +56,13 @@
       <div
         class="relative flex flex-col items-center bg-gradient-to-b from-gray-100 to-white rounded p-2"
       >
+      <a href="/frontend/src/pages/secretaire/sec_profil.html">
         <img
           id="profileDoc"
           class="w-12 h-12 object-cover rounded-full absolute -top-6"
           alt=""
         />
+      </a>
         <div class="flex flex-col items-center pt-4">
           <p class="font-medium" id="nameDoc"></p>
           <span id="specialiteDoc"></span>
@@ -99,11 +101,17 @@
           >
             <i class="ri-message-3-line"></i>
           </div>
-          <div
-            class="w-10 h-10 rounded-full bg-gray-50 flex justify-center items-center cursor-pointer"
-          >
-            <i class="ri-notification-3-line"></i>
-          </div>
+          <a href="/frontend/src/pages/doctors/doc_notif.html" class="relative">
+            <div
+              class="w-10 h-10 rounded-full bg-gray-50 flex justify-center items-center cursor-pointer"
+            >
+              <i class="ri-notification-3-line"></i>
+            </div>
+            <div
+              id="notifLength"
+              class="w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center text-sm absolute -top-2 right-0"
+            ></div>
+          </a>
         </div>
       </div>
       <!-- Content-1 -->
