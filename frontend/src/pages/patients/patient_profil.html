@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>page patient</title>
+    <title>Patient | profil</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
@@ -31,9 +31,7 @@
       </div>
       <nav>
         <ul>
-          <li
-            class="p-2 bg-gradient-to-r from-purple-200 to-white hover:bg-purple-50"
-          >
+          <li class="p-2 hover:bg-purple-50">
             <a
               href="/frontend/src/pages/patients/dashboard.html"
               class="font-medium gap-3 flex items-center"
@@ -92,43 +90,49 @@
       <!-- Content-1 -->
       <div class="mt-6 px-4">
         <div class="">
-            <!-- Bannière de profil -->
-            <div class="h-80 relative">
-               <!-- Bannière -->
-               <img
-                 src="/frontend/public/assets/banniere.jpg"
-                 alt="photo de profil"
-                 class="w-full h-full object-cover rounded"
-               />
-             
-               <!-- Photo de profil centrée -->
-               <div class="absolute inset-x-0 -bottom-20 md:-bottom-28 flex justify-center">
-                 <img
-                 id="profileBannerPhoto"
-                   alt="image"
-                   class="w-32 h-32  md:w-64 md:h-64 rounded-full object-cover border-8 border-white"
-                 />
-               </div>
-             </div>
-             <div class="flex flex-col justify-center items-center mt-[150px]">
-                <!-- Informations de l'utilisateur -->
-                 <h1 id="username" class="font-medium text-2xl md:text-4xl text-center mb-6">seynabou diop</h1>
-                 <p  id="email"class="font-medium text-2xl text-gray-400">seynabou221@gmail.com</p>
-                 <p  id="live"class="font-medium text-2xl text-gray-400">keur massar</p>
-             </div>
-         <div class="mt-16 px-6">
-           <h2 id="profileBannerName" class="text-xl font-semibold"></h2>
-           <p id="profileBannerEmail" class="text-gray-600"></p>
-         </div>
-         </div>
-      </div>
+          <!-- Bannière de profil -->
+          <div class="h-80 relative">
+            <!-- Bannière -->
+            <img
+              src="/frontend/public/assets/banniere.jpg"
+              alt="photo de profil"
+              class="w-full h-full object-cover rounded"
+            />
 
+            <!-- Photo de profil centrée -->
+            <div
+              class="absolute inset-x-0 -bottom-20 md:-bottom-28 flex justify-center"
+            >
+              <img
+                id="profileBannerPhoto"
+                alt="image"
+                class="w-32 h-32 md:w-64 md:h-64 rounded-full object-cover border-8 border-white"
+              />
+            </div>
+          </div>
+          <div class="flex flex-col justify-center items-center mt-[120px]">
+            <!-- Informations de l'utilisateur -->
+            <h1
+              id="username"
+              class="font-medium text-xl md:text-2xl text-center mb-3"
+            >
+              seynabou diop
+            </h1>
+            <p id="email" class="font-medium text-xl text-gray-500">
+              seynabou221@gmail.com
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
     <script type="module" src="/frontend/src/router/router.js"></script>
     <script
       type="module"
       src="/frontend/src/pages/patients/js/dashboard.js"
     ></script>
-    <script type="module" src="/frontend/src/pages/patients/js/patient_profil.js"></script>
+    <script
+      type="module"
+      src="/frontend/src/pages/patients/js/patient_profil.js"
+    ></script>
   </body>
 </html>
