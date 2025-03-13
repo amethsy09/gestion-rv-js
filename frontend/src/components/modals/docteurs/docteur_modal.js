@@ -108,7 +108,7 @@ export async function handleAddDocteurFormSubmit() {
   form.setAttribute("data-action", "add");
   const formData = new FormData(form);
   const docteurData = {
-    id: await generateId(),
+    id: String(await generateId()),
     nom: formData.get("nom"),
     prenom: formData.get("prenom"),
     telephone: formData.get("telephone"),
