@@ -130,20 +130,42 @@ async function handleEditDoctor(doctorId) {
 }
 
 async function handleDeleteDoctor(doctorId) {
-  const confirmDelete = confirm(
-    "Êtes-vous sûr de vouloir supprimer ce médecin ?"
+  const modal = createModal(
+    "warning.png",
+    "Êtes-vous sûr de vouloir supprimer ce medcin ?"
   );
-  if (!confirmDelete) return;
 
-  try {
-    console.log("ID du médecin à supprimer :", doctorId);
-    const success = await deleteDocteur(doctorId);
-    if (success) {
-      loadDoctorsTable();
+  const modalContent = modal.querySelector("div");
+  modalContent.innerHTML += `
+    <div class="flex justify-center space-x-4 mt-4">
+      <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+        Confirmer
+      </button>
+      <button id="cancelDelete" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+        Annuler
+      </button>
+    </div>
+  `;
+  const checkModal = document.getElementById("checkModal");
+  checkModal.appendChild(modal);
+
+  const confirmDeleteButton = modal.querySelector("#confirmDelete");
+  confirmDeleteButton.addEventListener("click", async () => {
+    try {
+      const success = await deleteDocteur(doctorId);
+      if (success) {
+        await loadDoctorsTable();
+      }
+    } catch (error) {
+      console.error("Erreur :", error);
+    } finally {
+      modal.remove();
     }
-  } catch (error) {
-    console.error("Erreur :", error);
-  }
+  });
+  const cancelDeleteButton = modal.querySelector("#cancelDelete");
+  cancelDeleteButton.addEventListener("click", () => {
+    modal.remove();
+  });
 }
 
 async function loadModal() {
