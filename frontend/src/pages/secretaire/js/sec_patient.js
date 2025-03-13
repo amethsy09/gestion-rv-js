@@ -5,6 +5,7 @@ import {
   handleUpdatePatient,
   openAddPatientModal,
 } from "../../../components/modals/patients/patient_modal.js";
+import { showNotification } from "../../../components/notifications/notification.js";
 import {
   deletePatient,
   getPatients,
@@ -130,6 +131,7 @@ async function loadModal() {
         const updatedDoctor = await handleUpdatePatient(patientId);
         if (updatedDoctor) {
           closeAddDocteurModal();
+          showNotification("Patient modifier avec success");
           loadDoctorsTable();
         }
       }
@@ -204,7 +206,6 @@ async function handleEditPatient(patientId) {
   const patient = patients.find((p) => p.id == patientId);
   if (!patient) return;
 
-  // Remplir le formulaire avec les données du patient
   document.getElementById("patientNom").value = patient.nom;
   document.getElementById("patientPrenom").value = patient.prenom;
   document.getElementById("patientEmail").value = patient.email;
@@ -213,34 +214,54 @@ async function handleEditPatient(patientId) {
   document.getElementById("patientAvatar").value = patient.avatar;
   document.getElementById("patientPassword").value = patient.password;
 
-  // Ouvrir la modale
   openAddPatientModal();
 
-  // Changer le texte du bouton de soumission
   const submitButton = document.querySelector(
     "#addPatientForm button[type='submit']"
   );
   submitButton.textContent = "Modifier";
   submitButton.innerHTML = `Modifier <i class="ri-edit-box-line"></i>`;
 
-  // Ajouter des attributs pour identifier l'action et l'ID du patient
   const form = document.getElementById("addPatientForm");
   form.setAttribute("data-action", "edit");
   form.setAttribute("data-patient-id", patientId);
 }
 
 async function handleDeletePatient(patientId) {
-  const confirmDelete = confirm(
+  const modal = createModal(
+    "warning.png",
     "Êtes-vous sûr de vouloir supprimer ce patient ?"
   );
-  if (!confirmDelete) return;
 
-  try {
-    const success = await deletePatient(patientId);
-    if (success) {
-      loadPatientsTable();
+  const modalContent = modal.querySelector("div");
+  modalContent.innerHTML += `
+    <div class="flex justify-center space-x-4 mt-4">
+      <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+        Confirmer
+      </button>
+      <button id="cancelDelete" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+        Annuler
+      </button>
+    </div>
+  `;
+  const checkModal = document.getElementById("checkModal");
+  checkModal.appendChild(modal);
+
+  const confirmDeleteButton = modal.querySelector("#confirmDelete");
+  confirmDeleteButton.addEventListener("click", async () => {
+    try {
+      const success = await deletePatient(patientId);
+      if (success) {
+        await loadPatientsTable();
+      }
+    } catch (error) {
+      console.error("Erreur :", error);
+    } finally {
+      modal.remove();
     }
-  } catch (error) {
-    console.error("Erreur :", error);
-  }
+  });
+  const cancelDeleteButton = modal.querySelector("#cancelDelete");
+  cancelDeleteButton.addEventListener("click", () => {
+    modal.remove();
+  });
 }

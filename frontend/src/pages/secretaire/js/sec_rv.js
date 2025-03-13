@@ -304,39 +304,39 @@ async function handleEditAppointment(appointmentId) {
   form.setAttribute("data-appointment-id", appointmentId);
 }
 export async function handleDeleteAppointment(appointmentId) {
-  // Demander une confirmation à l'utilisateur
-  const confirmDelete = confirm(
-    "Êtes-vous sûr de vouloir supprimer ce rendez-vous ?"
+  const modal = createModal(
+    "warning.png",
+    "Êtes-vous sûr de vouloir supprimer ce patient ?"
   );
-  if (!confirmDelete) return;
 
-  try {
-    // Appeler la fonction de suppression du service
-    const success = await deleteAppointment(appointmentId);
-
-    if (success) {
-      // Afficher un message de succès
-      const checkModal = document.getElementById("checkModal");
-      const modal = createModal(
-        "verifier.png",
-        "Le rendez-vous a été supprimé avec succès.",
-        "blue"
-      );
-      checkModal.appendChild(modal);
-
-      // Recharger la table des rendez-vous
-      await loadAppointmentsTable();
+  const modalContent = modal.querySelector("div");
+  modalContent.innerHTML += `
+    <div class="flex justify-center space-x-4 mt-4">
+      <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+        Confirmer
+      </button>
+      <button id="cancelDelete" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+        Annuler
+      </button>
+    </div>
+  `;
+  const checkModal = document.getElementById("checkModal");
+  checkModal.appendChild(modal);
+  const confirmDeleteButton = modal.querySelector("#confirmDelete");
+  confirmDeleteButton.addEventListener("click", async () => {
+    try {
+      const success = await deleteAppointment(appointmentId);
+      if (success) {
+        await loadAppointmentsTable();
+      }
+    } catch (error) {
+      console.error("Erreur :", error);
+    } finally {
+      modal.remove();
     }
-  } catch (error) {
-    console.error("Erreur lors de la suppression du rendez-vous :", error);
-
-    // Afficher un message d'erreur
-    const checkModal = document.getElementById("checkModal");
-    const modal = createModal(
-      "erreur.png",
-      "Une erreur s'est produite lors de la suppression du rendez-vous.",
-      "red"
-    );
-    checkModal.appendChild(modal);
-  }
+  });
+  const cancelDeleteButton = modal.querySelector("#cancelDelete");
+  cancelDeleteButton.addEventListener("click", () => {
+    modal.remove();
+  });
 }
