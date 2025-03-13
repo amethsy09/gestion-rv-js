@@ -12,7 +12,6 @@ export function openAddRvModal() {
   const modal = document.getElementById("addRvModal");
   modal.classList.remove("hidden");
 }
-
 export function closeAddRvModal() {
   const modal = document.getElementById("addRvModal");
   modal.classList.add("hidden");
@@ -21,7 +20,6 @@ export function closeAddRvModal() {
   form.setAttribute("data-action", "add");
   form.removeAttribute("data-appointment-id");
 }
-
 function checkValidateFormAddRv(rvData) {
   const appointmentDateError = document.getElementById("appointmentDateError");
   const appointmentTimeError = document.getElementById("appointmentTimeError");
@@ -68,7 +66,6 @@ function checkValidateFormAddRv(rvData) {
   }
   return isValid;
 }
-
 async function checkExistingAppointment(date, id_patient) {
   const appointments = await fetchData("rendez-vous");
   return appointments.some(
@@ -76,12 +73,11 @@ async function checkExistingAppointment(date, id_patient) {
       appointment.date === date && appointment.id_patient == id_patient
   );
 }
-
 export async function handleAddRvFormSubmit() {
   const form = document.getElementById("addRvForm");
   const formData = new FormData(form);
   const rvData = {
-    id: await generateId(),
+    id: String(await generateId()),
     date: formData.get("date"),
     heure: formData.get("heure"),
     id_docteur: parseInt(formData.get("id_docteur")),
@@ -110,7 +106,7 @@ export async function handleAddRvFormSubmit() {
     const newRv = await addAppointment(rvData);
     const Message = `Vous avez un nouveau rendez-vous le ${newRv.date} à ${newRv.heure}.`;
     const newNotif = {
-      id: await generateIdNotif(),
+      id: String(await generateIdNotif()),
       message: Message,
       id_docteur: newRv.id_docteur,
       id_patient: newRv.id_patient,
@@ -126,7 +122,6 @@ export async function handleAddRvFormSubmit() {
     console.error("Erreur :", error);
   }
 }
-
 async function generateId() {
   const rv = await fetchData("rendez-vous");
   const id = rv.length > 0 ? parseInt(rv[rv.length - 1].id) + 1 : 1;

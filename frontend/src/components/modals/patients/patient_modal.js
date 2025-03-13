@@ -88,7 +88,7 @@ export async function handleAddPatientFormSubmit() {
   const form = document.getElementById("addPatientForm");
   const formData = new FormData(form);
   const patientData = {
-    id: await generateId(),
+    id: String(await generateId()),
     nom: formData.get("nom"),
     prenom: formData.get("prenom"),
     telephone: formData.get("telephone"),
