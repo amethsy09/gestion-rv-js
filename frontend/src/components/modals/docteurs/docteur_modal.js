@@ -22,7 +22,19 @@ export function closeAddDocteurModal() {
   submitButton.innerHTML = `Ajouter <i class="ri-apps-2-add-line"></i>`;
 }
 
-function checkValidateFormAddDocteur(docteurData) {
+async function isTelephoneUnique(telephone) {
+  const docteurs = await fetchData("docteurs");
+  return !docteurs.some(docteur => docteur.telephone === telephone);
+}
+
+async function isEmailUnique(email) {
+  const docteurs = await fetchData("docteurs");
+  return !docteurs.some(docteur => docteur.email === email);
+}
+
+
+
+async function checkValidateFormAddDocteur(docteurData) {
   const validStart = [77, 76, 70];
   const nomDocteurError = document.getElementById("nomDocteurError");
   const prenomDocteurError = document.getElementById("docteurPrenomError");
@@ -79,12 +91,26 @@ function checkValidateFormAddDocteur(docteurData) {
     telephoneDocteurError.classList.add("text-red-500");
     isValid = false;
   }
+  if (telephone && !await isTelephoneUnique(telephone)) {
+    telephoneDocteurError.textContent = "Ce numéro de téléphone est déjà utilisé.";
+    telephoneDocteurError.classList.add("text-red-500");
+    isValid = false;
+  }
 
-  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+  if (!email) {
     emailDocteurError.textContent = "Veuillez saisir un email valide";
     emailDocteurError.classList.add("text-red-500");
     isValid = false;
+  }else if (!email.includes("@gmail.com")) {
+    emailDocteurError.textContent = "L'email doit contenir '@gmail.com'";
+    emailDocteurError.classList.add("text-red-500");
+    isValid = false;
+  } else if (!await isEmailUnique(email)) {
+    emailDocteurError.textContent = "Cet email est déjà utilisé";
+    emailDocteurError.classList.add("text-red-500");
+    isValid = false;
   }
+
   if (!password) {
     passwordDocteurError.textContent = "Veuillez saisir un mot de passe";
     passwordDocteurError.classList.add("text-red-500");
@@ -108,7 +134,7 @@ export async function handleAddDocteurFormSubmit() {
   form.setAttribute("data-action", "add");
   const formData = new FormData(form);
   const docteurData = {
-    id: String(await generateId()),
+    id: await generateId(),
     nom: formData.get("nom"),
     prenom: formData.get("prenom"),
     telephone: formData.get("telephone"),
@@ -118,7 +144,7 @@ export async function handleAddDocteurFormSubmit() {
     avatar: formData.get("avatar"),
     id_role: 2,
   };
-  if (!checkValidateFormAddDocteur(docteurData)) {
+  if (!await checkValidateFormAddDocteur(docteurData)) {
     return;
   }
   try {
