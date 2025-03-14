@@ -14,12 +14,18 @@
     <!-- sidebar -->
     <div
       id="sidebar"
-      class="flex flex-col justify-between p-3 fixed left-0 bg-gray-50 shadow-md h-full w-64 lg:w-52 lg:flex transform transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 z-50"
+      class="flex flex-col justify-between p-3 fixed left-0 shadow h-full w-64 lg:w-52 md:flex transform transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 z-50"
     >
       <div class="flex justify-between">
         <div class="flex items-center text-white gap-1">
-          <div class="p-2 bg-purple-500 rounded text-white self-center">GR</div>
-          <div class="flex flex-col text-gray-800 font-medium">
+          <div class="">
+            <img
+              src="/frontend/public/assets/logo.png"
+              class="h-10 object-cover"
+              alt=""
+            />
+          </div>
+          <div class="flex flex-col text-gray-800">
             <span>Gestion</span>
             <span>Rendez-vous</span>
           </div>
@@ -30,7 +36,7 @@
       </div>
       <nav>
         <ul>
-          <li class="py-2 hover:bg-purple-100">
+          <li class="py-2 px-4 hover:bg-purple-100 rounded-3xl">
             <a
               href="/frontend/src/pages/secretaire/dashboard.html"
               class="font-medium gap-3 flex items-center"
@@ -39,7 +45,7 @@
               <span>Accueil</span>
             </a>
           </li>
-          <li class="py-2 hover:bg-purple-100">
+          <li class="py-2 px-4 hover:bg-purple-100 rounded-3xl">
             <a
               href="/frontend/src/pages/secretaire/sec_docteur.html"
               class="font-medium gap-3 flex items-center"
@@ -48,7 +54,7 @@
               <span>Medecins</span>
             </a>
           </li>
-          <li class="py-2 hover:bg-purple-100">
+          <li class="py-2 px-4 hover:bg-purple-100 rounded-3xl">
             <a
               href="/frontend/src/pages/secretaire/sec_patient.html"
               class="font-medium gap-3 flex items-center"
@@ -57,7 +63,7 @@
               <span>Patients</span>
             </a>
           </li>
-          <li class="py-2 hover:bg-purple-100 bg-purple-100">
+          <li class="py-2 px-4 bg-purple-50 hover:bg-purple-100 rounded-3xl">
             <a
               href="/frontend/src/pages/secretaire/sec_rv.html"
               class="font-medium gap-3 flex items-center"
@@ -69,7 +75,7 @@
         </ul>
       </nav>
       <button
-        class="px-2 py-3 bg-gray-100 hover:bg-gray-200 font-medium"
+        class="px-2 py-2 hover:bg-gray-100 hover:rounded-3xl font-medium rounded"
         id="logoutBtn"
       >
         <span>Deconnexion</span>
@@ -79,29 +85,31 @@
     <!-- contenue -->
     <div class="w-full lg:ml-52">
       <!-- header -->
-      <div class="flex items-center justify-between py-2 px-3 shadow-md">
+      <div class="flex items-center justify-between py-2 px-3 shadow">
         <div>
-          <h1 class="text-lg font-medium hidden lg:block">
-            Espace rendez-vous
-          </h1>
+          <p
+            class="py-1 px-3 rounded-3xl bg-blue-50 text-blue-500 hidden md:block"
+          >
+            Espace secretaires
+          </p>
           <div
-            class="h-10 w-10 rounded-full bg-gray-50 flex justify-center items-center lg:hidden"
+            class="h-10 w-10 rounded-full bg-gray-50 flex justify-center items-center md:hidden"
             id="sidebar-device"
           >
             <i class="ri-menu-2-fill font-medium"></i>
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <div class="hidden lg:flex flex-col mr-4 text-sm font-medium">
+          <div class="hidden md:flex flex-col text-sm font-medium">
             <p class="text-end" id="profileName"></p>
             <p class="" id="profileEmail"></p>
           </div>
           <a href="/frontend/src/pages/secretaire/sec_profil.html">
             <img
-            id="profilePhoto"
-            alt="image"
-            class="w-10 h-10 rounded-full object-cover"
-          />
+              id="profilePhoto"
+              alt="image"
+              class="w-10 h-10 rounded-full object-cover"
+            />
           </a>
         </div>
       </div>
