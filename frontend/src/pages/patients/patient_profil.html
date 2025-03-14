@@ -19,8 +19,14 @@
     >
       <div class="flex justify-between">
         <div class="flex items-center text-white gap-1">
-          <div class="p-2 bg-purple-500 rounded text-white self-center">GR</div>
-          <div class="flex flex-col text-gray-800 font-medium">
+          <div class="">
+            <img
+              src="/frontend/public/assets/logo.png"
+              class="h-10 object-cover"
+              alt=""
+            />
+          </div>
+          <div class="flex flex-col text-gray-800">
             <span>Gestion</span>
             <span>Rendez-vous</span>
           </div>
@@ -31,7 +37,7 @@
       </div>
       <nav>
         <ul>
-          <li class="p-2 hover:bg-purple-50">
+          <li class="py-2 px-4 rounded-3xl hover:bg-purple-50">
             <a
               href="/frontend/src/pages/patients/dashboard.html"
               class="font-medium gap-3 flex items-center"
@@ -40,7 +46,7 @@
               <span>Dasboard</span>
             </a>
           </li>
-          <li class="p-2 hover:bg-purple-50">
+          <li class="py-2 px-4 rounded-3xl hover:bg-purple-50">
             <a
               href="/frontend/src/pages/patients/patient_Rv.html"
               class="font-medium gap-3 flex items-center"
@@ -53,7 +59,7 @@
       </nav>
       <button
         id="logoutBtn"
-        class="py-2 rounded bg-white cursor-pointer shadow bg-gradient-to-r from-purple-500 to-blue-300 font-medium text-white"
+        class="py-2 rounded-3xl bg-white cursor-pointer shadow bg-gradient-to-r from-purple-500 to-blue-300 font-medium text-white"
       >
         <span>Deconnexion</span>
         <i class="ri-logout-box-r-line"></i>
