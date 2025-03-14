@@ -19,8 +19,14 @@
     >
       <div class="flex justify-between">
         <div class="flex items-center text-white gap-1">
-          <div class="p-2 bg-purple-500 rounded text-white self-center">GR</div>
-          <div class="flex flex-col text-gray-800 font-medium">
+          <div class="">
+            <img
+              src="/frontend/public/assets/logo.png"
+              class="h-10 object-cover"
+              alt=""
+            />
+          </div>
+          <div class="flex flex-col text-gray-800">
             <span>Gestion</span>
             <span>Rendez-vous</span>
           </div>
@@ -32,7 +38,7 @@
       <nav>
         <ul>
           <li
-            class="p-2 bg-gradient-to-r from-purple-200 to-white hover:bg-purple-50"
+            class="py-2 px-4 rounded-3xl bg-gradient-to-r from-purple-200 to-white hover:bg-purple-50"
           >
             <a
               href="/frontend/src/pages/patients/dashboard.html"
@@ -42,7 +48,7 @@
               <span>Dasboard</span>
             </a>
           </li>
-          <li class="p-2 hover:bg-purple-50">
+          <li class="py-2 px-4 rounded-3xl hover:bg-purple-50">
             <a
               href="/frontend/src/pages/patients/patient_Rv.html"
               class="font-medium gap-3 flex items-center"
@@ -55,7 +61,7 @@
       </nav>
       <button
         id="logoutBtn"
-        class="py-2 rounded bg-white cursor-pointer shadow bg-gradient-to-r from-purple-500 to-blue-300 font-medium text-white"
+        class="py-2 rounded-3xl bg-white cursor-pointer shadow bg-gradient-to-r from-purple-500 to-blue-300 font-medium text-white"
       >
         <span>Deconnexion</span>
         <i class="ri-logout-box-r-line"></i>
@@ -183,16 +189,16 @@
       <div class="mt-3 px-4">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <div
-            class="bg-white p-3 rounded-lg shadow-md flex flex-col justify-around relative"
+            class="bg-white p-3 rounded-lg shadow-md flex flex-col justify-around relative transition-transform duration-300 hover:scale-105 cursor-pointer"
           >
-          <a href="/frontend/src/pages/patients/patient_profil.html">
-            <img
-            id="profilPatient"
-            class="w-32 h-32 rounded-full object-cover"
-            alt=""
-          />
-          </a>
-           
+            <a href="/frontend/src/pages/patients/patient_profil.html">
+              <img
+                id="profilPatient"
+                class="w-32 h-32 rounded-full object-cover"
+                alt=""
+              />
+            </a>
+
             <h3 class="text-xl font-medium text-gray-800" id="nomPatient"></h3>
             <p class="text-gray-600">
               <i class="ri-stethoscope-line"></i>
@@ -218,7 +224,9 @@
               <i class="ri-arrow-right-up-box-line text-xl"></i>
             </div>
           </div>
-          <div class="bg-white p-3 rounded-lg shadow-md">
+          <div
+            class="bg-white p-3 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 cursor-pointer"
+          >
             <h3 class="text-lg font-semibold text-gray-500">
               Évolution des patients
             </h3>
@@ -227,9 +235,7 @@
         </div>
       </div>
     </div>
-
     <div id="notifications" class="fixed top-4 right-4 space-y-2"></div>
-
     <script type="module" src="/frontend/src/router/router.js"></script>
     <script
       type="module"
