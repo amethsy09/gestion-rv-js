@@ -12,14 +12,41 @@ document.addEventListener("DOMContentLoaded", async () => {
   displayInfoPatient(user);
   await handleNotificaionCount(user.id);
   await displayCardInfo();
+  displayNotificationsRecentModals(user);
   const { labels, acceptedData, rejectedData, pendingData } =
     await getRendezVousByMonth(user.id);
   initChart(labels, acceptedData, rejectedData, pendingData);
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
+
   sidebarDeviceButton.addEventListener("click", openSidebar);
   sidebarClose.addEventListener("click", closeSidebar);
 });
+
+function displayRecentNotifications(notifications) {
+  const recentNotifications = document.getElementById("recentNotifications");
+  recentNotifications.innerHTML = "";
+
+  if (notifications.length === 0) {
+    recentNotifications.innerHTML = `
+      <p class="text-gray-500">Aucune notification récente.</p>
+    `;
+    return;
+  }
+
+  notifications.forEach((notification) => {
+    const notificationItem = document.createElement("div");
+    notificationItem.className = "p-2 bg-gray-50 rounded-md";
+    notificationItem.innerHTML = `
+      <p class="text-sm">${notification.message}</p>
+      <span class="text-xs text-gray-500">${new Date(
+        notification.createdAt
+      ).toLocaleString()}</span>
+    `;
+    recentNotifications.appendChild(notificationItem);
+  });
+}
+
 function displayInfoPatient(user) {
   const profilPatient = document.getElementById("profilPatient");
   const nomPatient = document.getElementById("nomPatient");
@@ -34,6 +61,7 @@ function displayInfoPatient(user) {
   adressePatient.textContent = user.adresse;
   numPatient.textContent = user.telephone;
 }
+
 async function displayCardInfo() {
   const user = getCurrentUser();
   const { accepted, rejected, pending } = await getRendezVousStatsByPatientId(
@@ -43,6 +71,28 @@ async function displayCardInfo() {
   document.getElementById("valideAppointments").textContent = accepted;
   document.getElementById("deleteAppointments").textContent = rejected;
   document.getElementById("pendingAppointments").textContent = pending;
+}
+
+function displayNotificationsRecentModals(user) {
+  const notificationIcon = document.getElementById("notificationIcon");
+  const notificationModal = document.getElementById("notificationModal");
+  notificationIcon.addEventListener("mouseenter", async () => {
+    const notifications = await getPatientNotifications(user.id);
+    displayRecentNotifications(notifications.slice(0, 3));
+    notificationModal.classList.remove("hidden");
+  });
+
+  notificationIcon.addEventListener("mouseleave", () => {
+    notificationModal.classList.add("hidden");
+  });
+
+  notificationModal.addEventListener("mouseenter", () => {
+    notificationModal.classList.remove("hidden");
+  });
+
+  notificationModal.addEventListener("mouseleave", () => {
+    notificationModal.classList.add("hidden");
+  });
 }
 
 export function initChart(labels, acceptedData, rejectedData, pendingData) {

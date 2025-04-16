@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = getCurrentUser();
   await handleNotificaionCount(user.id);
   displayNotifications(notifications);
+  displayNotificationsRecentModals(user);
   const sidebarDeviceButton = document.getElementById("sidebar-device");
   const sidebarClose = document.getElementById("sidebar-close");
   sidebarDeviceButton.addEventListener("click", openSidebar);
@@ -87,4 +88,50 @@ function openSidebar() {
 function closeSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.add("-translate-x-full");
+}
+
+function displayRecentNotifications(notifications) {
+  const recentNotifications = document.getElementById("recentNotifications");
+  recentNotifications.innerHTML = "";
+
+  if (notifications.length === 0) {
+    recentNotifications.innerHTML = `
+      <p class="text-gray-500">Aucune notification récente.</p>
+    `;
+    return;
+  }
+
+  notifications.forEach((notification) => {
+    const notificationItem = document.createElement("div");
+    notificationItem.className = "p-2 bg-gray-50 rounded-md";
+    notificationItem.innerHTML = `
+      <p class="text-sm">${notification.message}</p>
+      <span class="text-xs text-gray-500">${new Date(
+        notification.createdAt
+      ).toLocaleString()}</span>
+    `;
+    recentNotifications.appendChild(notificationItem);
+  });
+}
+
+function displayNotificationsRecentModals(user) {
+  const notificationIcon = document.getElementById("notificationIcon");
+  const notificationModal = document.getElementById("notificationModal");
+  notificationIcon.addEventListener("mouseenter", async () => {
+    const notifications = await getPatientNotifications(user.id);
+    displayRecentNotifications(notifications.slice(0, 3));
+    notificationModal.classList.remove("hidden");
+  });
+
+  notificationIcon.addEventListener("mouseleave", () => {
+    notificationModal.classList.add("hidden");
+  });
+
+  notificationModal.addEventListener("mouseenter", () => {
+    notificationModal.classList.remove("hidden");
+  });
+
+  notificationModal.addEventListener("mouseleave", () => {
+    notificationModal.classList.add("hidden");
+  });
 }

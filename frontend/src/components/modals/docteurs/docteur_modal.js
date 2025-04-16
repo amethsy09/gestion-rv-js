@@ -24,15 +24,13 @@ export function closeAddDocteurModal() {
 
 async function isTelephoneUnique(telephone) {
   const docteurs = await fetchData("docteurs");
-  return !docteurs.some(docteur => docteur.telephone === telephone);
+  return !docteurs.some((docteur) => docteur.telephone === telephone);
 }
 
 async function isEmailUnique(email) {
   const docteurs = await fetchData("docteurs");
-  return !docteurs.some(docteur => docteur.email === email);
+  return !docteurs.some((docteur) => docteur.email === email);
 }
-
-
 
 async function checkValidateFormAddDocteur(docteurData) {
   const validStart = [77, 76, 70];
@@ -91,8 +89,9 @@ async function checkValidateFormAddDocteur(docteurData) {
     telephoneDocteurError.classList.add("text-red-500");
     isValid = false;
   }
-  if (telephone && !await isTelephoneUnique(telephone)) {
-    telephoneDocteurError.textContent = "Ce numéro de téléphone est déjà utilisé.";
+  if (telephone && !(await isTelephoneUnique(telephone))) {
+    telephoneDocteurError.textContent =
+      "Ce numéro de téléphone est déjà utilisé.";
     telephoneDocteurError.classList.add("text-red-500");
     isValid = false;
   }
@@ -101,11 +100,11 @@ async function checkValidateFormAddDocteur(docteurData) {
     emailDocteurError.textContent = "Veuillez saisir un email valide";
     emailDocteurError.classList.add("text-red-500");
     isValid = false;
-  }else if (!email.includes("@gmail.com")) {
+  } else if (!email.includes("@gmail.com")) {
     emailDocteurError.textContent = "L'email doit contenir '@gmail.com'";
     emailDocteurError.classList.add("text-red-500");
     isValid = false;
-  } else if (!await isEmailUnique(email)) {
+  } else if (!(await isEmailUnique(email))) {
     emailDocteurError.textContent = "Cet email est déjà utilisé";
     emailDocteurError.classList.add("text-red-500");
     isValid = false;
@@ -134,7 +133,7 @@ export async function handleAddDocteurFormSubmit() {
   form.setAttribute("data-action", "add");
   const formData = new FormData(form);
   const docteurData = {
-    id: await generateId(),
+    id: String(await generateId()),
     nom: formData.get("nom"),
     prenom: formData.get("prenom"),
     telephone: formData.get("telephone"),
@@ -144,7 +143,7 @@ export async function handleAddDocteurFormSubmit() {
     avatar: formData.get("avatar"),
     id_role: 2,
   };
-  if (!await checkValidateFormAddDocteur(docteurData)) {
+  if (!(await checkValidateFormAddDocteur(docteurData))) {
     return;
   }
   try {

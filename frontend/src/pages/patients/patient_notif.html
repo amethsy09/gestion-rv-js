@@ -80,11 +80,9 @@
           >
             <i class="ri-message-3-line"></i>
           </div>
-          <a
-            href="/frontend/src/pages/patients/patient_notif.html"
-            class="relative"
-          >
+          <div class="relative">
             <div
+              id="notificationIcon"
               class="w-10 h-10 rounded-full bg-gray-50 flex justify-center items-center cursor-pointer"
             >
               <i class="ri-notification-3-line"></i>
@@ -93,7 +91,16 @@
               id="notifLength"
               class="w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center text-sm absolute -top-2 right-0"
             ></div>
-          </a>
+          </div>
+        </div>
+        <div
+          id="notificationModal"
+          class="hidden fixed top-12 right-3 w-64 bg-white rounded-lg shadow-lg z-50"
+        >
+          <div class="p-3">
+            <h3 class="text-md font-medium mb-2">Notifications récentes</h3>
+            <div id="recentNotifications" class="space-y-2"></div>
+          </div>
         </div>
       </div>
       <!-- Content-1 -->
@@ -108,9 +115,7 @@
           </div>
           <p class="font-medium text-lg">notifications</p>
         </div>
-        <div id="notificationsList" class="grid grid-cols-1 gap-4">
-          <!-- Les notifications seront ajoutées ici dynamiquement -->
-        </div>
+        <div id="notificationsList" class="grid grid-cols-1 gap-4"></div>
       </div>
     </div>
     <div id="notifications" class="fixed top-4 right-4 space-y-2"></div>
